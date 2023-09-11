@@ -24,7 +24,10 @@ public class Bishop implements Piece{
     }
 
     private boolean isCleanPath(Position newPosition, Board board){
-       return Piece.super.isCleanDiag(position, newPosition, board);
+        if (Piece.super.isADiagPos(position, newPosition)){
+            return Piece.super.getPiecesFromDiagonal(position, newPosition, board).isEmpty();
+        }
+        return false;
     }
 
     @Override

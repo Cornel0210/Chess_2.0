@@ -22,9 +22,16 @@ public class Queen implements Piece {
     }
 
     private boolean isCleanPath(Position newPosition, Board board){
-        return Piece.super.isCleanRow(position, newPosition, board) ||
-                Piece.super.isCleanColumn(position, newPosition, board) ||
-                Piece.super.isCleanDiag(position, newPosition, board);
+        if (Piece.super.isADiagPos(position, newPosition)){
+            return Piece.super.getPiecesFromDiagonal(position, newPosition, board).isEmpty();
+        }
+        if (Piece.super.isSameRow(position, newPosition)){
+            return Piece.super.getPiecesFromRow(position, newPosition, board).isEmpty();
+        }
+        if (Piece.super.isSameColumn(position, newPosition)){
+            return Piece.super.getPiecesFromColum(position, newPosition, board).isEmpty();
+        }
+        return false;
     }
 
     @Override

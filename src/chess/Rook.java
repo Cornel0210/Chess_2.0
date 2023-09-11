@@ -22,8 +22,13 @@ public class Rook implements Piece {
         return false;
     }
     private boolean isCleanPath(Position newPosition, Board board){
-        return Piece.super.isCleanRow(position, newPosition, board) ||
-                Piece.super.isCleanColumn(position, newPosition, board);
+        if (Piece.super.isSameRow(position, newPosition)){
+            return Piece.super.getPiecesFromRow(position, newPosition, board).isEmpty();
+        }
+        if (Piece.super.isSameColumn(position, newPosition)){
+            return Piece.super.getPiecesFromColum(position, newPosition, board).isEmpty();
+        }
+        return false;
     }
 
     public boolean wasMoved() {
