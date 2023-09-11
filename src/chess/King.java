@@ -1,6 +1,5 @@
 package chess;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class King implements Piece {
@@ -16,96 +15,63 @@ public class King implements Piece {
 
     @Override
     public boolean moveTo(Position newPosition, Board board) {
-        if (isValid(newPosition)){
-            if (board.isEmptyCell(newPosition) || board.getPiece(newPosition) == null){
-                wasMoved = true;
-                //setPosition(newPosition);
-                return true;
-            }
+        if (canMoveTo(newPosition, board) && isSafePosition(newPosition, board)){
+            wasMoved = true;
+            //setPosition(newPosition);
+            return true;
         }
         return false;
     }
 
-    private boolean isValid (Position newPosition){
-        return !newPosition.equals(position) &&
-                Math.abs(position.getX()-newPosition.getX()) <=1 &&
-                Math.abs(position.getY()- newPosition.getY()) <=1;
+    private boolean isSafePosition(Position newPosition, Board board){
+        List<Piece> opponentPieces = board.getPiecesThatAttackAPosition(newPosition);
+        for (Piece piece : opponentPieces){
+            if (piece.getColour() != colour && piece.moveTo(newPosition, board)){
+                return false;
+            }
+        }
+        return true;
     }
 
-    public boolean isUnderCheck(Board board){
-        List<Piece> pieces = getPiecesThatCheckedKing(board);
-        if (pieces == null){
-            return  false;
+    private boolean canMoveTo(Position newPosition, Board board){
+        boolean flag = !newPosition.equals(position) &&
+                Math.abs(position.getX() - newPosition.getX()) <=1 &&
+                Math.abs(position.getY() - newPosition.getY()) <=1;
+        flag = flag && isFarEnoughFromOpponentKing(newPosition);
+        return flag && (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour);
+    }
+
+    private boolean isFarEnoughFromOpponentKing(Position newPosition){
+        King opponentKing = Game.getInstance().getOpponent(colour).getKing();
+        if (Math.abs(opponentKing.getPosition().getX() - newPosition.getX()) <= 1){
+            return Math.abs(opponentKing.getPosition().getY() - newPosition.getY()) >= 2;
         }
-        for (Piece piece : pieces){
+        if (Math.abs(opponentKing.getPosition().getY() - newPosition.getY()) <= 1){
+            return Math.abs(opponentKing.getPosition().getX() - newPosition.getX()) >= 2;
+        }
+        return true;
+
+    }
+
+    public int piecesThatThreatensKing(Board board, List<Piece> opponentPieces){
+        int count = 0;
+        for (Piece piece : opponentPieces){
             if (piece.moveTo(position, board)){
-                return true;
+                count++;
             }
         }
-        return false;
+        return count;
     }
 
-    private List<Piece> getPiecesThatCheckedKing(Board board){
-        List<Piece> pieces = new LinkedList<>();
-        List<Position> extremes = getExtremePositionsRelatedToKing();
-
-        if (extremes.isEmpty()){
-            return null;
-        }
-
-        for (Position pos : extremes){
-            if (board.isSameColumn(position, pos)){
-                pieces.addAll(board.getPiecesBetween_ColumPositions(position, pos));
-            }
-            if (board.isSameRow(position, pos)){
-                pieces.addAll(board.getPiecesBetween_RowPositions(position, pos));
-            }
-            if (board.isADiagPos(position, pos)){
-                pieces.addAll(board.getPiecesBetween_DiagonalPositions(position, pos));
+    public int piecesThatThreatensKing(Board board){
+        List<Piece> opponentsPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
+        int count = 0;
+        for (Piece piece : opponentsPieces){
+            if (piece.moveTo(position, board)){
+                count++;
             }
         }
-        return pieces;
-    }
-
-    private List<Position> getExtremePositionsRelatedToKing(){
-        List<Position> positions = new LinkedList<>();
-        positions.add(new Position(position.getX(), -1));
-        positions.add(new Position(position.getX(), 8));
-        positions.add(new Position(-1, position.getY()));
-        positions.add(new Position(8, position.getY()));
-
-        int x = position.getX();
-        int y = position.getY();
-        while (x - 1 >= 0 && y - 1 >= 0){
-            x--;
-            y--;
-        }
-        positions.add(new Position(x,y));
-
-        x = position.getX();
-        y = position.getY();
-        while (x + 1 <= 7 && y + 1 <= 7){
-            x++;
-            y++;
-        }
-        positions.add(new Position(x,y));
-
-        x = position.getX();
-        y = position.getY();
-        while (x + 1 <= 7 && y - 1 >= 0){
-            x++;
-            y--;
-        }
-        positions.add(new Position(x,y));
-
-        x = position.getX();
-        y = position.getY();
-        while (x - 1 >= 0 && y + 1 <= 7){
-            x--;
-            y++;
-        }
-        positions.add(new Position(x,y));
-        return positions;
+        return count;
     }
 
     public boolean wasMoved() {

@@ -14,8 +14,7 @@ public class Bishop implements Piece{
     @Override
     public boolean moveTo(Position newPosition, Board board) {
         if(isCleanPath(newPosition, board)){
-            Piece temp = board.getPiece(newPosition);
-            if (temp == null || temp.getColour() != colour){
+            if (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour){
                 //setPosition(newPosition);
                 return true;
             }

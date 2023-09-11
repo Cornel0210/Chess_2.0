@@ -1,10 +1,19 @@
 package chess;
 
 public class Game {
-    private final Board board = new Board();
-    private final Player player1 = new Player("nickname1", Colour.WHITE, (King) board.getPiece(new Position(0,3)));
-    private final Player player2 = new Player("nickname2", Colour.BLACK, (King) board.getPiece(new Position(7,3)));
-    private boolean isWhite = true;
+    private static Game INSTANCE;
+    private final Board board;
+    private final Player player1;
+    private final Player player2;
+    private boolean isWhite;
+
+    public Game() {
+        board = new Board();
+        player1 = new Player("nickname1", Colour.WHITE, board.getPiece(new Position(0,3)));
+        player2 = new Player("nickname2", Colour.BLACK, board.getPiece(new Position(7,3)));
+        isWhite = true;
+        board.allocatePieces(player1, player2);
+    }
 
     public void play(){
         Player current;
@@ -23,13 +32,12 @@ public class Game {
     }
 
 
-    public boolean movePiece(Position oldPosition, Position newPosition, Player player){
-        Piece piece = board.getPiece(oldPosition);
-        if (piece != null && piece.getColour() == player.getColour() && piece.moveTo(newPosition, board)){
-            board.updateBoard(oldPosition, newPosition, piece);
-            if (player.getKing().isUnderCheck(board)){
-
-            }
+    private boolean movePiece(Position oldPosition, Position newPosition, Player player){
+        Piece pieceToMove = board.getPiece(oldPosition);
+        Piece pieceRemoved = board.getPiece(newPosition);
+        if (pieceToMove != null && pieceToMove.getColour() == player.getColour() && pieceToMove.moveTo(newPosition, board)){
+            board.updateBoard(oldPosition, newPosition, pieceToMove);
+            int attackersNr = player.getKing().piecesThatThreatensKing(board, getOpponent(player.getColour()).getAvailablePieces());
 
 
             System.out.println("----------------------------");
@@ -41,4 +49,13 @@ public class Game {
         return false;
     }
 
+    public static Game getInstance() {
+        if (INSTANCE == null){
+            INSTANCE = new Game();
+        }
+        return INSTANCE;
+    }
+    public Player getOpponent (Colour colour){
+        return player1.getColour() == colour ? player2 : player1;
+    }
 }

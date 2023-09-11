@@ -567,17 +567,81 @@ public class GameTest {
      */
 
     @org.junit.Test
-    public void moveKing() {
+    public void underCheckKing() {
         Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,4), Colour.WHITE);
+        Player player1 = new Player("default", Colour.BLACK, null);
+        Player player2 = new Player("default", Colour.WHITE, king);
 
         matrix[0][4] = new King(new Position(0,4), Colour.WHITE);
         matrix[0][0] = new Rook(new Position(0,0), Colour.BLACK);
         matrix[2][4] = new Queen(new Position(2,4), Colour.BLACK);
 
         Board board2 = new Board(matrix);
+        board2.allocatePieces(player1, player2);
         initPos = new Position(0,4);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(((King) piece).isUnderCheck(board2));
+        assertEquals(2, player2.getKing().piecesThatThreatensKing(board2, player1.getAvailablePieces()));
     }
+
+    @org.junit.Test
+    public void underCheckKing2() {
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(4,3), Colour.BLACK);
+        Player player1 = new Player("default", Colour.BLACK, king);
+        Player player2 = new Player("default", Colour.WHITE, null);
+
+        matrix[4][3] = king;
+        matrix[4][4] = new Rook(new Position(4,4), Colour.BLACK);
+        matrix[4][5] = new Rook(new Position(4,5), Colour.WHITE);
+        matrix[0][3] = new Queen(new Position(0,3), Colour.WHITE);
+        matrix[7][0] = new Bishop(new Position(7,0), Colour.WHITE);
+        matrix[3][2] = new Pawn(new Position(3,2), Colour.WHITE);
+        matrix[3][4] = new Pawn(new Position(3,4), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        board2.allocatePieces(player1, player2);
+        initPos = new Position(4,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertEquals(4, player1.getKing().piecesThatThreatensKing(board2, player2.getAvailablePieces()));
+    }
+
+    @org.junit.Test
+    public void underCheckKing3() {
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(4,3), Colour.BLACK);
+        matrix[4][3] = king;
+        Player player1 = new Player("default", Colour.BLACK, king);
+        Player player2 = new Player("default", Colour.WHITE, null);
+        matrix[2][2] = new Knight(new Position(2,2), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        board2.allocatePieces(player1, player2);
+        initPos = new Position(4,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertEquals(0, player1.getKing().piecesThatThreatensKing(board2, player2.getAvailablePieces()));
+    }
+
+    @org.junit.Test
+    public void underCheckKing4() {
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(4,3), Colour.BLACK);
+        Player player1 = new Player("default", Colour.BLACK, king);
+        Player player2 = new Player("default", Colour.WHITE, null);
+
+        matrix[4][3] = king;
+        matrix[2][2] = new Knight(new Position(2,2), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        board2.allocatePieces(player1, player2);
+        initPos = new Position(4,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertEquals(1, player1.getKing().piecesThatThreatensKing(board2, player2.getAvailablePieces()));
+    }
+
+
 }
