@@ -346,4 +346,212 @@ public class GameTest {
         board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
+
+    /**
+     * tests for knights
+     */
+
+    @org.junit.Test
+    public void moveKnight() { //check a move to an empty spot
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[3][3] = new Knight(new Position(3,3), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(3,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(1,2), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveKnight2() { //check a move to an empty spot
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[3][3] = new Knight(new Position(3,3), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(3,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(5,2), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveKnight3() { //check a move to an empty spot
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[3][3] = new Knight(new Position(3,3), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(3,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(2,5), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveKnight4() { //check a move to an empty spot
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[3][3] = new Knight(new Position(3,3), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(3,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(4,1), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveKnight5() { //attack a piece
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[3][3] = new Knight(new Position(3,3), Colour.WHITE);
+        matrix[4][1] = new Pawn(new Position(4,1), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(3,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(4,1), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveKnight6() { //move over a friendly piece
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[3][3] = new Knight(new Position(3,3), Colour.WHITE);
+        matrix[4][1] = new Pawn(new Position(4,1), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(3,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.moveTo(new Position(4,1), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    /**
+     * tests for queens
+     */
+
+    @org.junit.Test
+    public void moveQueen() { //performing moves, without obstacles
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(0,7), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveQueen1() { //performing moves, without obstacles
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(6,0), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveQueen2() { //performing moves, without obstacles
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(5,5), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveQueen3() { //trying to move out of the path
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.moveTo(new Position(1,2), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveQueen4() { //attacking an opponent's piece
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+        matrix[0][2] = new Queen(new Position(0,2), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(0,2), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveQueen5() { //attacking an opponent's piece
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+        matrix[2][2] = new Rook(new Position(2,2), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(2,2), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
+
+    @org.junit.Test
+    public void moveQueen6() { //try to move over a friendly piece
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][0] = new Queen(new Position(0,0), Colour.BLACK);
+        matrix[2][2] = new Rook(new Position(2,2), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.moveTo(new Position(2,2), board2));
+        board2.updateBoard(initPos, piece);
+        System.out.println(board2);
+    }
 }

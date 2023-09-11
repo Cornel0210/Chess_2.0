@@ -11,11 +11,9 @@ public class Pawn implements Piece{
 
     @Override
     public boolean moveTo(Position newPosition, Board board) {
-        if (newPosition.isValid()){
-            if (isMovingTwoSquares(newPosition, board) || isMovingOneSquare(newPosition, board) || isAttacking(newPosition, board)){
-                setPosition(newPosition);
-                return true;
-            }
+        if (isMovingTwoSquares(newPosition, board) || isMovingOneSquare(newPosition, board) || isAttacking(newPosition, board)){
+            setPosition(newPosition);
+            return true;
         }
         return false;
     }
@@ -103,6 +101,6 @@ public class Pawn implements Piece{
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "p" : "P";
+        return colour == Colour.WHITE ? "WP" : "BP";
     }
 }

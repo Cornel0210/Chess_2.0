@@ -23,6 +23,10 @@ public class Board {
     public Piece getPiece(Position position){
         return board[position.getX()][position.getY()];
     }
+
+    public boolean isEmptyCell (Position position){
+        return board[position.getX()][position.getY()] == null;
+    }
     public void updateBoard(Position oldPosition, Piece piece){
         board[oldPosition.getX()][oldPosition.getY()] = null;
         board[piece.getPosition().getX()][piece.getPosition().getY()] = piece;

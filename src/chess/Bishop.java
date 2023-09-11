@@ -23,47 +23,8 @@ public class Bishop implements Piece{
         return false;
     }
 
-    private boolean isADiagPos(Position newPosition){ //checks if newPosition is on position`s diagonal
-        return Math.abs(position.getX() - newPosition.getX()) == Math.abs(position.getY() - newPosition.getY());
-    }
-
-    private boolean isCleanPath(Position newPosition, Board board){ //checks for intermediary pieces between current
-                                                                    // position and the newPosition
-        if (isADiagPos(newPosition)){
-            if (newPosition.getX() < position.getX() && newPosition.getY() < position.getY()){ //moving up-left
-                for (int i = 1; i < Math.abs(position.getX() - newPosition.getX()); i++) {
-                    if (board.getPiece(new Position(position.getX() - i, position.getY() - i)) != null){
-                        return false;
-                    }
-                }
-                return true;
-            }
-            if (newPosition.getX() > position.getX() && newPosition.getY() > position.getY()){ //moving down-right
-                for (int i = 1; i < Math.abs(position.getX() - newPosition.getX()); i++) {
-                    if (board.getPiece(new Position(position.getX() + i, position.getY() + i)) != null){
-                        return false;
-                    }
-                }
-                return true;
-            }
-            if (newPosition.getX() > position.getX() && newPosition.getY() < position.getY()){ //moving down-left
-                for (int i = 1; i < Math.abs(position.getX() - newPosition.getX()); i++) {
-                    if (board.getPiece(new Position(position.getX() + i, position.getY() - i)) != null){
-                        return false;
-                    }
-                }
-                return true;
-            }
-            if (newPosition.getX() < position.getX() && newPosition.getY() > position.getY()){ //moving up-right
-                for (int i = 1; i < Math.abs(position.getX() - newPosition.getX()); i++) {
-                    if (board.getPiece(new Position(position.getX() - i, position.getY() + i)) != null){
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
+    private boolean isCleanPath(Position newPosition, Board board){
+       return Piece.super.isCleanDiag(position, newPosition, board);
     }
 
     @Override
@@ -83,6 +44,6 @@ public class Bishop implements Piece{
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "b" : "B";
+        return colour == Colour.WHITE ? "WB" : "BB";
     }
 }
