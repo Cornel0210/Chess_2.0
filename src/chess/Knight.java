@@ -15,7 +15,7 @@ public class Knight implements Piece {
         if (isValid(newPosition)){
             Piece piece = board.getPiece(newPosition);
             if (piece == null || piece.getColour() != colour) {
-                setPosition(newPosition);
+                //setPosition(newPosition);
                 return true;
             }
         }

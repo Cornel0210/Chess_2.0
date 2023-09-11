@@ -12,7 +12,7 @@ public class Pawn implements Piece{
     @Override
     public boolean moveTo(Position newPosition, Board board) {
         if (isMovingTwoSquares(newPosition, board) || isMovingOneSquare(newPosition, board) || isAttacking(newPosition, board)){
-            setPosition(newPosition);
+            //setPosition(newPosition);
             return true;
         }
         return false;

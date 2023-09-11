@@ -1,5 +1,8 @@
 package chess;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class King implements Piece {
     private Position position;
     private final Colour colour;
@@ -16,7 +19,7 @@ public class King implements Piece {
         if (isValid(newPosition)){
             if (board.isEmptyCell(newPosition) || board.getPiece(newPosition) == null){
                 wasMoved = true;
-                setPosition(newPosition);
+                //setPosition(newPosition);
                 return true;
             }
         }
@@ -29,8 +32,28 @@ public class King implements Piece {
                 Math.abs(position.getY()- newPosition.getY()) <=1;
     }
 
-    private boolean isUnderCheck(){
+    private boolean isUnderCheck(Board board){
+        List<Piece> pieces = new LinkedList<>();
 
+        pieces.addAll(Piece.super.getPiecesFromRow(position, new Position(position.getX(), 0), board));
+        pieces.addAll(Piece.super.getPiecesFromRow(position, new Position(position.getX(), 7), board));
+        pieces.addAll(Piece.super.getPiecesFromColum(position, new Position(0, position.getY()), board));
+        pieces.addAll(Piece.super.getPiecesFromColum(position, new Position(7, position.getY()), board));
+        Position temp;
+        if (position.getX()>= position.getY()){
+            temp = new Position(position.getX() - position.getY(), 0);
+            pieces.addAll(Piece.super.getPiecesFromDiagonal(position, temp, board));
+        } else if (position.getX()<= position.getY()){
+            temp = new Position( 0, position.getY()-position.getX());
+            pieces.addAll(Piece.super.getPiecesFromDiagonal(position, temp, board));
+        }
+        if (!pieces.isEmpty()){
+            for (Piece piece : pieces){
+                if (piece.moveTo(position,board)){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

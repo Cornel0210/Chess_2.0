@@ -14,7 +14,7 @@ public class Queen implements Piece {
     public boolean moveTo(Position newPosition, Board board) {
         if (isCleanPath(newPosition, board)){
             if (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour){
-                setPosition(newPosition);
+                //setPosition(newPosition);
                 return true;
             }
         }

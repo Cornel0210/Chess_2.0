@@ -16,7 +16,7 @@ public class Bishop implements Piece{
         if(isCleanPath(newPosition, board)){
             Piece temp = board.getPiece(newPosition);
             if (temp == null || temp.getColour() != colour){
-                setPosition(newPosition);
+                //setPosition(newPosition);
                 return true;
             }
         }

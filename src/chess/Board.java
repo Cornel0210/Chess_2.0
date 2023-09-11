@@ -27,7 +27,8 @@ public class Board {
     public boolean isEmptyCell (Position position){
         return board[position.getX()][position.getY()] == null;
     }
-    public void updateBoard(Position oldPosition, Piece piece){
+    public void updateBoard(Position oldPosition, Position newPosition, Piece piece){
+        piece.setPosition(newPosition);
         board[oldPosition.getX()][oldPosition.getY()] = null;
         board[piece.getPosition().getX()][piece.getPosition().getY()] = piece;
     }
