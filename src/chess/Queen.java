@@ -22,14 +22,14 @@ public class Queen implements Piece {
     }
 
     private boolean isCleanPath(Position newPosition, Board board){
-        if (Piece.super.isADiagPos(position, newPosition)){
-            return Piece.super.getPiecesFromDiagonal(position, newPosition, board).isEmpty();
+        if (board.isADiagPos(position, newPosition)){
+            return board.getPiecesBetween_DiagonalPositions(position, newPosition).isEmpty();
         }
-        if (Piece.super.isSameRow(position, newPosition)){
-            return Piece.super.getPiecesFromRow(position, newPosition, board).isEmpty();
+        if (board.isSameRow(position, newPosition)){
+            return board.getPiecesBetween_RowPositions(position, newPosition).isEmpty();
         }
-        if (Piece.super.isSameColumn(position, newPosition)){
-            return Piece.super.getPiecesFromColum(position, newPosition, board).isEmpty();
+        if (board.isSameColumn(position, newPosition)){
+            return board.getPiecesBetween_ColumPositions(position, newPosition).isEmpty();
         }
         return false;
     }

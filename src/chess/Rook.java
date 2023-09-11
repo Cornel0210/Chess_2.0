@@ -22,11 +22,11 @@ public class Rook implements Piece {
         return false;
     }
     private boolean isCleanPath(Position newPosition, Board board){
-        if (Piece.super.isSameRow(position, newPosition)){
-            return Piece.super.getPiecesFromRow(position, newPosition, board).isEmpty();
+        if (board.isSameRow(position, newPosition)){
+            return board.getPiecesBetween_RowPositions(position, newPosition).isEmpty();
         }
-        if (Piece.super.isSameColumn(position, newPosition)){
-            return Piece.super.getPiecesFromColum(position, newPosition, board).isEmpty();
+        if (board.isSameColumn(position, newPosition)){
+            return board.getPiecesBetween_ColumPositions(position, newPosition).isEmpty();
         }
         return false;
     }

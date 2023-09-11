@@ -24,7 +24,7 @@ public class Pawn implements Piece{
 
     private boolean isMovingTwoSquares(Position newPosition, Board board){
         if (isAtInitPos() && isMovingOnTheSameColumn(newPosition) && movesTwoFwd(newPosition)){
-            if (colour == Colour.WHITE){
+            if (colour == Colour.BLACK){
                 for (int i = position.getX()-1; i >= newPosition.getX(); i--) {
                     if (board.getPiece(new Position(i, position.getY())) != null){
                         return false;
@@ -43,7 +43,7 @@ public class Pawn implements Piece{
     }
 
     public boolean isAtEndOfBoard(Colour colour){
-        if (colour == Colour.WHITE){
+        if (colour == Colour.BLACK){
             return position.getX() == 0;
         } else {
             return position.getX()  == 7;
@@ -52,21 +52,21 @@ public class Pawn implements Piece{
 
     private boolean isAtInitPos(){
         if (colour == Colour.WHITE){
-            return position.getX()  == 6;
-        } else {
             return position.getX()  == 1;
+        } else {
+            return position.getX()  == 6;
         }
     }
 
     private boolean movesTwoFwd(Position newPosition){
-        if (colour == Colour.WHITE){
+        if (colour == Colour.BLACK){
             return newPosition.getX() < position.getX() && Math.abs(newPosition.getX() - position.getX()) == 2;
         } else {
             return newPosition.getX() > position.getX() && Math.abs(newPosition.getX() - position.getX()) == 2;
         }
     }
     private boolean movesOneFwd(Position newPosition){
-        if (colour == Colour.WHITE){
+        if (colour == Colour.BLACK){
             return newPosition.getX() < position.getX() && Math.abs(newPosition.getX() - position.getX()) == 1;
         } else {
             return newPosition.getX() > position.getX() && Math.abs(newPosition.getX() - position.getX()) == 1;

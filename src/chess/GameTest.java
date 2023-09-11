@@ -9,7 +9,7 @@ public class GameTest {
     Piece piece;
 
     /**
-     * The tests below are checking if moving a black pawn respects all the chess rules.
+     * The tests below are checking if moving a pawn respects all the chess rules.
      */
 
     @org.junit.Before
@@ -59,6 +59,19 @@ public class GameTest {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
         assertFalse(piece.moveTo(new Position(0,1), board));
+    }
+    @org.junit.Test
+    public void movePawn() {
+        Piece[][] matrix = new Piece[8][8];
+        matrix[6][0] = new Pawn(new Position(6,0), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(6,0);
+        newPos = new Position(4,0);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(newPos, board2));
+        board2.updateBoard(initPos, newPos, piece);
     }
 
     @org.junit.Test
@@ -547,5 +560,24 @@ public class GameTest {
         assertFalse(piece.moveTo(newPos, board2));
         board2.updateBoard(initPos, newPos, piece);
         System.out.println(board2);
+    }
+
+    /**
+     * tests for king
+     */
+
+    @org.junit.Test
+    public void moveKing() {
+        Piece[][] matrix = new Piece[8][8];
+
+        matrix[0][4] = new King(new Position(0,4), Colour.WHITE);
+        matrix[0][0] = new Rook(new Position(0,0), Colour.BLACK);
+        matrix[2][4] = new Queen(new Position(2,4), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,4);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(((King) piece).isUnderCheck(board2));
     }
 }
