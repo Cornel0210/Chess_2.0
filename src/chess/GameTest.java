@@ -21,44 +21,44 @@ public class GameTest {
     public void movePiece1() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertTrue(piece.moveTo(new Position(2,1), board));
+        assertTrue(piece.canMoveTo(new Position(2,1), board));
     }
 
     @org.junit.Test
     public void movePiece2() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertFalse(piece.moveTo(new Position(2,0), board));
+        assertFalse(piece.canMoveTo(new Position(2,0), board));
     }
     @org.junit.Test
     public void movePiece3() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertFalse(piece.moveTo(new Position(2,2), board));
+        assertFalse(piece.canMoveTo(new Position(2,2), board));
     }
     @org.junit.Test
     public void movePiece4() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertTrue(piece.moveTo(new Position(3,1), board));
+        assertTrue(piece.canMoveTo(new Position(3,1), board));
     }
     @org.junit.Test
     public void movePiece5() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertFalse(piece.moveTo(new Position(3,2), board));
+        assertFalse(piece.canMoveTo(new Position(3,2), board));
     }
     @org.junit.Test
     public void movePiece6() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertFalse(piece.moveTo(new Position(3,0), board));
+        assertFalse(piece.canMoveTo(new Position(3,0), board));
     }
     @org.junit.Test
     public void movePiece7() {
         initPos = new Position(1,1);
         piece = board.getPiece(initPos);
-        assertFalse(piece.moveTo(new Position(0,1), board));
+        assertFalse(piece.canMoveTo(new Position(0,1), board));
     }
     @org.junit.Test
     public void movePawn() {
@@ -70,8 +70,8 @@ public class GameTest {
         newPos = new Position(4,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
     }
 
     @org.junit.Test
@@ -81,19 +81,19 @@ public class GameTest {
         newPos = new Position(3,1);
         piece = board.getPiece(initPos);
         piece.moveTo(newPos, board);
-        board.updateBoard(initPos, newPos, piece);
+        board.updateBoard(initPos, piece);
 
         initPos = new Position(3,1);
         newPos = new Position(4,1);
         piece = board.getPiece(initPos);
         piece.moveTo(newPos, board);
-        board.updateBoard(initPos, newPos, piece);
+        board.updateBoard(initPos, piece);
 
         initPos = new Position(4,1);
         newPos = new Position(5,1);
         piece = board.getPiece(initPos);
         piece.moveTo(newPos, board);
-        board.updateBoard(initPos, newPos, piece);
+        board.updateBoard(initPos, piece);
 
         initPos = new Position(5,1);
         newPos = new Position(5,0);
@@ -109,7 +109,7 @@ public class GameTest {
         newPos = new Position(6,2);
         piece = board.getPiece(initPos);
         assertTrue(piece.moveTo(newPos, board));
-        board.updateBoard(initPos, newPos, piece);
+        board.updateBoard(initPos, piece);
     }
 
 
@@ -129,8 +129,8 @@ public class GameTest {
         newPos = new Position(7,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -147,8 +147,8 @@ public class GameTest {
         newPos = new Position(0,7);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -166,8 +166,8 @@ public class GameTest {
         newPos = new Position(4,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -181,8 +181,8 @@ public class GameTest {
         newPos = new Position(4,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        piece.moveTo(newPos, board2);
-        board2.updateBoard(initPos, newPos, piece);
+        piece.canMoveTo(newPos, board2);
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
         assertTrue(((Rook) piece).wasMoved());
     }
@@ -200,8 +200,8 @@ public class GameTest {
         newPos = new Position(0,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -220,8 +220,8 @@ public class GameTest {
         newPos = new Position(2,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -236,8 +236,8 @@ public class GameTest {
         newPos = new Position(5,7);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -252,8 +252,8 @@ public class GameTest {
         newPos = new Position(0,7);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -269,8 +269,8 @@ public class GameTest {
         newPos = new Position(1,6);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -286,8 +286,8 @@ public class GameTest {
         newPos = new Position(1,6);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -302,8 +302,8 @@ public class GameTest {
         newPos = new Position(1,1);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -319,8 +319,8 @@ public class GameTest {
         newPos = new Position(0,7);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -336,8 +336,8 @@ public class GameTest {
         newPos = new Position(5,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -356,8 +356,8 @@ public class GameTest {
         newPos = new Position(1,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -372,8 +372,8 @@ public class GameTest {
         newPos = new Position(5,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -388,8 +388,8 @@ public class GameTest {
         newPos = new Position(2,5);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -404,8 +404,8 @@ public class GameTest {
         newPos = new Position(4,1);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -421,8 +421,8 @@ public class GameTest {
         newPos = new Position(4,1);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -438,8 +438,8 @@ public class GameTest {
         newPos = new Position(4,1);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -458,8 +458,8 @@ public class GameTest {
         newPos = new Position(0,7);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -474,8 +474,8 @@ public class GameTest {
         newPos = new Position(6,0);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -490,8 +490,8 @@ public class GameTest {
         newPos = new Position(5,5);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -506,8 +506,8 @@ public class GameTest {
         newPos = new Position(1,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -523,8 +523,8 @@ public class GameTest {
         newPos = new Position(0,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -540,8 +540,8 @@ public class GameTest {
         newPos = new Position(2,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertTrue(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertTrue(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -557,8 +557,8 @@ public class GameTest {
         newPos = new Position(2,2);
         piece = board2.getPiece(initPos);
         System.out.println(board2);
-        assertFalse(piece.moveTo(newPos, board2));
-        board2.updateBoard(initPos, newPos, piece);
+        assertFalse(piece.canMoveTo(newPos, board2));
+        board2.updateBoard(initPos, piece);
         System.out.println(board2);
     }
 
@@ -643,5 +643,146 @@ public class GameTest {
         assertEquals(1, player1.getKing().piecesThatThreatensKing(board2, player2.getAvailablePieces()));
     }
 
+    /**
+     * tests for castling
+     */
+    @org.junit.Test
+    public void castle() { //no obstacles; castle to left
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][0] = new Rook(new Position(0,0), Colour.WHITE);
 
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle1() { //king is checked
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][0] = new Rook(new Position(0,0), Colour.WHITE);
+        matrix[4][3] = new Queen(new Position(4,3), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle2() { //king moves to checked position
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][0] = new Rook(new Position(0,0), Colour.WHITE);
+        matrix[5][6] = new Bishop(new Position(5,6), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle3() { //king goes through a checked position
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][0] = new Rook(new Position(0,0), Colour.WHITE);
+        matrix[6][2] = new Rook(new Position(6,2), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle4() { //rook belongs to opponent
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][0] = new Rook(new Position(0,0), Colour.BLACK);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle5() { //rook was moved
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        Piece rook = new Rook(new Position(0,0), Colour.WHITE);
+        matrix[0][0] = rook;
+
+        Board board2 = new Board(matrix);
+        rook.canMoveTo(new Position(1,0), board2);
+        board2.updateBoard(new Position(0,0), rook);
+        rook.canMoveTo(new Position(0,0), board2);
+        board2.updateBoard(new Position(1,0), rook);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle6() { //rook was moved
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        Piece rook = new Rook(new Position(0,0), Colour.WHITE);
+        matrix[0][0] = rook;
+
+        Board board2 = new Board(matrix);
+        king.canMoveTo(new Position(1,4), board2);
+        board2.updateBoard(new Position(0,3), king);
+        king.canMoveTo(new Position(0,3), board2);
+        board2.updateBoard(new Position(1,4), king);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle7() { //there is no empty path between pieces for castling
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][0] = new Rook(new Position(0,0), Colour.WHITE);
+        matrix[0][1] = new Knight(new Position(0,0), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertFalse(piece.canMoveTo(new Position(0,1),board2));
+    }
+
+    @org.junit.Test
+    public void castle8() { //no obstacles; castle to right
+        Piece[][] matrix = new Piece[8][8];
+        Piece king = new King(new Position(0,3), Colour.WHITE);
+        matrix[0][3] = king;
+        matrix[0][7] = new Rook(new Position(0,7), Colour.WHITE);
+
+        Board board2 = new Board(matrix);
+        initPos = new Position(0,3);
+        piece = board2.getPiece(initPos);
+        System.out.println(board2);
+        assertTrue(piece.moveTo(new Position(0,5),board2));
+    }
 }

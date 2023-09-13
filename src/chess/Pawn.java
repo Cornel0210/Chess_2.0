@@ -11,8 +11,16 @@ public class Pawn implements Piece{
 
     @Override
     public boolean moveTo(Position newPosition, Board board) {
+        if (canMoveTo(newPosition, board)){
+            setPosition(newPosition);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMoveTo(Position newPosition, Board board) {
         if (isMovingTwoSquares(newPosition, board) || isMovingOneSquare(newPosition, board) || isAttacking(newPosition, board)){
-            //setPosition(newPosition);
             return true;
         }
         return false;

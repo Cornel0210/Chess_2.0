@@ -9,10 +9,17 @@ public class Bishop implements Piece{
         this.position = position;
     }
 
-
-
     @Override
     public boolean moveTo(Position newPosition, Board board) {
+        if (canMoveTo(newPosition, board)){
+            setPosition(newPosition);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMoveTo(Position newPosition, Board board) {
         if(isCleanPath(newPosition, board)){
             if (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour){
                 //setPosition(newPosition);

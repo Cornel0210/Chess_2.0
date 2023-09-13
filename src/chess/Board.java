@@ -124,7 +124,7 @@ public class Board {
     }
 
 
-    public List<Piece> getPiecesThatAttackAPosition(Position position){
+    public List<Piece> getPiecesThatCanGoTo(Position position){
         List<Piece> pieces = new LinkedList<>();
         List<Position> extremes = getExtremitiesOfPosition(position);
 
@@ -219,8 +219,7 @@ public class Board {
     public boolean isEmptyCell (Position position){
         return board[position.getX()][position.getY()] == null;
     }
-    public void updateBoard(Position oldPosition, Position newPosition, Piece piece){
-        piece.setPosition(newPosition);
+    public void updateBoard(Position oldPosition, Piece piece){
         board[oldPosition.getX()][oldPosition.getY()] = null;
         board[piece.getPosition().getX()][piece.getPosition().getY()] = piece;
     }

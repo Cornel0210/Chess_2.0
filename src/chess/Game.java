@@ -35,8 +35,8 @@ public class Game {
     private boolean movePiece(Position oldPosition, Position newPosition, Player player){
         Piece pieceToMove = board.getPiece(oldPosition);
         Piece pieceRemoved = board.getPiece(newPosition);
-        if (pieceToMove != null && pieceToMove.getColour() == player.getColour() && pieceToMove.moveTo(newPosition, board)){
-            board.updateBoard(oldPosition, newPosition, pieceToMove);
+        if (pieceToMove != null && pieceToMove.getColour() == player.getColour() && pieceToMove.canMoveTo(newPosition, board)){
+            board.updateBoard(oldPosition, pieceToMove);
             int attackersNr = player.getKing().piecesThatThreatensKing(board, getOpponent(player.getColour()).getAvailablePieces());
 
 
@@ -57,5 +57,9 @@ public class Game {
     }
     public Player getOpponent (Colour colour){
         return player1.getColour() == colour ? player2 : player1;
+    }
+
+    public Player getPlayer(Colour colour){
+        return player1.getColour() == colour ? player1 : player2;
     }
 }

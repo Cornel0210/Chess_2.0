@@ -9,9 +9,17 @@ public class Knight implements Piece {
         this.colour = colour;
     }
 
-
     @Override
     public boolean moveTo(Position newPosition, Board board) {
+        if (canMoveTo(newPosition, board)){
+            setPosition(newPosition);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMoveTo(Position newPosition, Board board) {
         if (isValid(newPosition)){
             Piece piece = board.getPiece(newPosition);
             if (piece == null || piece.getColour() != colour) {

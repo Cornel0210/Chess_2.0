@@ -12,6 +12,16 @@ public class Rook implements Piece {
 
     @Override
     public boolean moveTo(Position newPosition, Board board) {
+        if (canMoveTo(newPosition, board)){
+            setPosition(newPosition);
+            wasMoved = true;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMoveTo(Position newPosition, Board board) {
         if (isCleanPath(newPosition, board)){
             if ((board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour)) {
                 //setPosition(newPosition);
@@ -29,6 +39,11 @@ public class Rook implements Piece {
             return board.getPiecesBetween_ColumPositions(position, newPosition).isEmpty();
         }
         return false;
+    }
+
+    public void wasUsedToCastle(Position newPosition){
+        setPosition(newPosition);
+        wasMoved = true;
     }
 
     public boolean wasMoved() {
