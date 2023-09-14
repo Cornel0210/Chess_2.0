@@ -525,6 +525,7 @@ public class GameTest {
     @org.junit.Test
     public void castleToLeft() { //no obstacles; castle to left
         Game game = Game.getInstance();
+        game.resetBoard();
         Player white = game.getPlayer(Colour.WHITE);
         game.movePiece(new Position(1,0), new Position(2,0), white);
         game.movePiece(new Position(1,1), new Position(2,1), white);
@@ -535,9 +536,10 @@ public class GameTest {
         assertTrue(game.movePiece(new Position(0,3), new Position(0,1), white));
     }
 
-    /*@org.junit.Test
+    @org.junit.Test
     public void castleToRight() { //no obstacles; castle to right
         Game game = Game.getInstance();
+        game.resetBoard();
         Player black = game.getPlayer(Colour.BLACK);
         game.movePiece(new Position(6,7), new Position(4,7), black);
         game.movePiece(new Position(6,6), new Position(4,6), black);
@@ -548,7 +550,7 @@ public class GameTest {
         game.movePiece(new Position(7,5), new Position(6,6), black);
         game.movePiece(new Position(7,4), new Position(6,5), black);
         assertTrue(game.movePiece(new Position(7,3), new Position(7,5), black));
-    }*/
+    }
 
     @org.junit.Test
     public void castle1() { //king is checked
@@ -665,6 +667,7 @@ public class GameTest {
     @org.junit.Test
     public void movePiece2() {
         Game game = Game.getInstance();
+        game.resetBoard();
         Player white = game.getPlayer(Colour.WHITE);
         Player black = game.getPlayer(Colour.BLACK);
         game.movePiece(new Position(6,3), new Position(4,3), black);

@@ -8,8 +8,8 @@ public class Player {
     private final String name;
     private final Colour colour;
     private final King king;
-    private final List<Piece> availablePieces;
-    private final LinkedList<Piece> removedPieces;
+    private List<Piece> availablePieces;
+    private LinkedList<Piece> removedPieces;
 
     public Player(String name, Colour colour, Piece king) {
         this.name = name;
@@ -30,24 +30,6 @@ public class Player {
         }
         return pos;
     }
-
-    /*public boolean hasLost(Board board){
-        List<Piece> opponentAttackers= king.piecesThatThreatensKing(board);
-        if (opponentAttackers.size() >= 2){
-            List<Position> surroundingPositions = board.getSurroundingPositions(king.getPosition());
-            for (Position pos : surroundingPositions){
-                if (!king.canMoveTo(pos,board)){
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        if (opponentAttackers.size() == 1){
-
-        }
-    }*/
-
 
 
     private int getInt(){
@@ -79,6 +61,11 @@ public class Player {
     }
     public List<Piece> getAvailablePieces() {
         return availablePieces;
+    }
+
+    public void resetListsOfPieces(){
+        availablePieces = new LinkedList<>();
+        removedPieces = new LinkedList<>();
     }
 
     public String getName() {

@@ -71,6 +71,7 @@ public class Board {
         return Math.abs(initPosition.getX() - newPosition.getX()) == Math.abs(initPosition.getY() - newPosition.getY());
     }
     public void allocatePieces(Player player1, Player player2){
+
         for (Piece[] pieces : board) {
             for (Piece piece : pieces) {
                 if (piece != null) {
@@ -204,6 +205,11 @@ public class Board {
         board[newPosition.getX()][newPosition.getY()] = removedPiece;
         opponent.undoRemovedPiece();
         System.out.println(this);
+    }
+
+    public void resetBoard(Player player1, Player player2){
+        initializeBoard();
+        allocatePieces(player1, player2);
     }
 
     @Override

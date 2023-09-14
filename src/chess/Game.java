@@ -9,8 +9,8 @@ public class Game {
 
     public Game() {
         board = new Board();
-        player1 = new Player("nickname1", Colour.WHITE, board.getPiece(new Position(0,3)));
-        player2 = new Player("nickname2", Colour.BLACK, board.getPiece(new Position(7,3)));
+        player1 = new Player("player1", Colour.WHITE, board.getPiece(new Position(0,3)));
+        player2 = new Player("player2", Colour.BLACK, board.getPiece(new Position(7,3)));
         isWhite = true;
         board.allocatePieces(player1, player2);
     }
@@ -61,6 +61,10 @@ public class Game {
 
     public Player getPlayer(Colour colour){
         return player1.getColour() == colour ? player1 : player2;
+    }
+
+    public void resetBoard(){
+        board.resetBoard(player1, player2);
     }
 
     public static Game getInstance() {
