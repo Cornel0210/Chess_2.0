@@ -32,7 +32,7 @@ public class Queen implements Piece {
 
     private boolean hasNoPiecesTo(Position newPosition, Board board){
             return !board.hasPiecesBetween(position, newPosition);
-        }
+    }
 
     @Override
     public Colour getColour() {

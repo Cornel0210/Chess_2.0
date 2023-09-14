@@ -41,16 +41,17 @@ public class King implements Piece {
 
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
-        if (canBeMovedTo(newPosition, board) &&
-                isSafePosition(newPosition, board) &&
-                isMovingOneSquare(newPosition) &&
-                hasMoreThanOneSquareToOppKing(newPosition)){
-            return true;
-        }
-        return false;
+        return canBeMovedTo(newPosition, board) &&
+                isChecked(newPosition, board) &&
+                isMovingOneSquare(newPosition, board) &&
+                hasMoreThanOneSquareToOppKing(newPosition);
     }
 
-    private boolean isSafePosition(Position newPosition, Board board){ //checks if king will be checked at the newPosition
+    public boolean isChecked(Board board){
+        return isChecked(position, board);
+    }
+
+    private boolean isChecked(Position newPosition, Board board){ //checks if king will be checked at the newPosition
         List<Piece> opponentPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
         for (Piece piece : opponentPieces){
             if (piece.getColour() != colour && piece.canMoveTo(newPosition, board)){
@@ -65,10 +66,8 @@ public class King implements Piece {
         return (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour);
     }
 
-    private boolean isMovingOneSquare(Position newPosition){ //checks if king is moving one square from the initial pos
-         return !newPosition.equals(position) &&
-                Math.abs(position.getX() - newPosition.getX()) <=1 &&
-                Math.abs(position.getY() - newPosition.getY()) <=1;
+    private boolean isMovingOneSquare(Position newPosition, Board board){ //checks if king is moving one square from the initial pos
+         return board.getSurroundingPositions(newPosition).contains(position) && position != newPosition;
     }
 
     private boolean hasMoreThanOneSquareToOppKing(Position newPosition){ //calculating the distance between the kings in order
@@ -94,8 +93,7 @@ public class King implements Piece {
     }
 
     private boolean isMovingTwoSquares(Position newPosition){ //checks if king is moving two squares from
-        // the initial position, in order to perform a castle
-
+                                                                // the initial position, in order to perform a castle
         return Math.abs(position.getY() - newPosition.getY()) == 2;
     }
 
@@ -128,25 +126,15 @@ public class King implements Piece {
     }
     private boolean positionsAreNotChecked (Position newPosition, Board board){ //checks if king is checked at current
                                                     // position or goes through chess while castling
-        if (newPosition.getY() < position.getY()){
-            for (int i = position.getY(); i > position.getY()-3; i--) {
-                if (!isSafePosition(new Position(position.getX(), i), board)){
-                    return false;
-                }
-            }
-        } else {
-            for (int i = position.getY(); i < position.getY()+3; i++) {
-                if (!isSafePosition(new Position(position.getX(), i), board)){
-                    return false;
-                }
+        List<Position> positionsToCheck = board.getPositionsBetween(position, newPosition);
+        positionsToCheck.add(position);
+        for (Position pos : positionsToCheck){
+            if (isChecked(pos, board)){
+                return false;
             }
         }
         return true;
     }
-    public boolean isChecked(Board board){
-        return piecesThatThreatensKing(board).size()>0;
-    }
-
     public List<Piece> piecesThatThreatensKing(Board board){ //checks if at current position, king is checked
         List<Piece> opponentsPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
         List<Piece> piecesThatThreatensKing = new LinkedList<>();
@@ -157,7 +145,6 @@ public class King implements Piece {
         }
         return piecesThatThreatensKing;
     }
-
     public boolean isInCheckMate(Board board){
         List<Piece> opponentAttackers = piecesThatThreatensKing(board);
         List<Position> surroundingPositions = board.getSurroundingPositions(position);
@@ -194,7 +181,6 @@ public class King implements Piece {
         }
         return false;
     }
-
 
     @Override
     public Colour getColour() {

@@ -31,7 +31,6 @@ public class Game {
         }
     }
 
-
     public boolean movePiece(Position oldPosition, Position newPosition, Player player){
         Piece pieceToMove = board.getPiece(oldPosition);
         Piece removedPiece = board.getPiece(newPosition);

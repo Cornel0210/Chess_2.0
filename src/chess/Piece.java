@@ -6,5 +6,4 @@ public interface Piece {
     Colour getColour();
     void setPosition(Position position);
     Position getPosition();
-
 }
