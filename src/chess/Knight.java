@@ -22,10 +22,7 @@ public class Knight implements Piece {
     public boolean canMoveTo(Position newPosition, Board board) {
         if (isValid(newPosition)){
             Piece piece = board.getPiece(newPosition);
-            if (piece == null || piece.getColour() != colour) {
-                //setPosition(newPosition);
-                return true;
-            }
+            return piece == null || piece.getColour() != colour;
         }
         return false;
     }
@@ -52,6 +49,6 @@ public class Knight implements Piece {
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "WH" : "BH";
+        return colour == Colour.WHITE ? "\u001B[37mH\u001B[0m" : "\u001B[30mH\u001B[0m";
     }
 }

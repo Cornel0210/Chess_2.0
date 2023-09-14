@@ -20,20 +20,16 @@ public class Bishop implements Piece{
 
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
-        if(isCleanPath(newPosition, board)){
-            if (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour){
-                //setPosition(newPosition);
-                return true;
-            }
+        if(board.isADiagPos(position, newPosition) &&
+                hasNoPiecesTo(newPosition, board)) {
+
+            return board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour;
         }
         return false;
     }
 
-    private boolean isCleanPath(Position newPosition, Board board){
-        if (board.isADiagPos(position, newPosition)){
-            return board.getPiecesBetween_DiagonalPositions(position, newPosition).isEmpty();
-        }
-        return false;
+    private boolean hasNoPiecesTo(Position newPosition, Board board){
+       return !board.hasPiecesBetween(position, newPosition);
     }
 
     @Override
@@ -53,6 +49,6 @@ public class Bishop implements Piece{
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "WB" : "BB";
+        return colour == Colour.WHITE ? "\u001B[37mB\u001B[0m" : "\u001B[30mB\u001B[0m";
     }
 }

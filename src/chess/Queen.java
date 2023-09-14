@@ -21,27 +21,18 @@ public class Queen implements Piece {
 
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
-        if (isCleanPath(newPosition, board)){
-            if (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour){
-                //setPosition(newPosition);
-                return true;
-            }
+        if ((board.isSameRow(position, newPosition) ||
+        board.isSameColumn(position, newPosition) ||
+        board.isADiagPos(position, newPosition)) &&
+        hasNoPiecesTo(newPosition, board)) {
+            return board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour;
         }
         return false;
     }
 
-    private boolean isCleanPath(Position newPosition, Board board){
-        if (board.isADiagPos(position, newPosition)){
-            return board.getPiecesBetween_DiagonalPositions(position, newPosition).isEmpty();
+    private boolean hasNoPiecesTo(Position newPosition, Board board){
+            return !board.hasPiecesBetween(position, newPosition);
         }
-        if (board.isSameRow(position, newPosition)){
-            return board.getPiecesBetween_RowPositions(position, newPosition).isEmpty();
-        }
-        if (board.isSameColumn(position, newPosition)){
-            return board.getPiecesBetween_ColumPositions(position, newPosition).isEmpty();
-        }
-        return false;
-    }
 
     @Override
     public Colour getColour() {
@@ -60,6 +51,6 @@ public class Queen implements Piece {
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "WQ" : "BQ";
+        return colour == Colour.WHITE ? "\u001B[37mQ\u001B[0m" : "\u001B[30mQ\u001B[0m";
     }
 }

@@ -32,21 +32,36 @@ public class Game {
     }
 
 
-    private boolean movePiece(Position oldPosition, Position newPosition, Player player){
+    public boolean movePiece(Position oldPosition, Position newPosition, Player player){
         Piece pieceToMove = board.getPiece(oldPosition);
-        Piece pieceRemoved = board.getPiece(newPosition);
-        if (pieceToMove != null && pieceToMove.getColour() == player.getColour() && pieceToMove.canMoveTo(newPosition, board)){
-            board.updateBoard(oldPosition, pieceToMove);
-            int attackersNr = player.getKing().piecesThatThreatensKing(board, getOpponent(player.getColour()).getAvailablePieces());
+        Piece removedPiece = board.getPiece(newPosition);
+        Player opponent = getOpponent(player.getColour());
+        boolean flag = false;
 
+        if (pieceBelongsToPlayer(pieceToMove, player)){
+             flag = pieceToMove.moveTo(newPosition, board);
+            board.update(oldPosition, newPosition, opponent);
+        }
+        if (player.getKing().isChecked(board)){
+            board.undo(oldPosition, newPosition, pieceToMove, removedPiece, opponent);
+            flag = false;
+        }
+        return flag;
+    }
 
-            System.out.println("----------------------------");
-            System.out.println(board);
-            return true;
-        } else {
-            System.out.println("can t move");
+    private boolean pieceBelongsToPlayer(Piece piece, Player player){
+        if (piece != null){
+            return piece.getColour() == player.getColour();
         }
         return false;
+    }
+
+    public Player getOpponent (Colour colour){
+        return player1.getColour() == colour ? player2 : player1;
+    }
+
+    public Player getPlayer(Colour colour){
+        return player1.getColour() == colour ? player1 : player2;
     }
 
     public static Game getInstance() {
@@ -54,12 +69,5 @@ public class Game {
             INSTANCE = new Game();
         }
         return INSTANCE;
-    }
-    public Player getOpponent (Colour colour){
-        return player1.getColour() == colour ? player2 : player1;
-    }
-
-    public Player getPlayer(Colour colour){
-        return player1.getColour() == colour ? player1 : player2;
     }
 }

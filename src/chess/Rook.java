@@ -22,30 +22,24 @@ public class Rook implements Piece {
 
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
-        if (isCleanPath(newPosition, board)){
-            if ((board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour)) {
-                //setPosition(newPosition);
-                wasMoved = true;
-                return true;
-            }
+        if ((board.isSameRow(position, newPosition) ||
+                board.isSameColumn(position, newPosition)) &&
+                hasNoPiecesTo(newPosition, board)){
+            return board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour;
         }
         return false;
     }
-    private boolean isCleanPath(Position newPosition, Board board){
-        if (board.isSameRow(position, newPosition)){
-            return board.getPiecesBetween_RowPositions(position, newPosition).isEmpty();
-        }
-        if (board.isSameColumn(position, newPosition)){
-            return board.getPiecesBetween_ColumPositions(position, newPosition).isEmpty();
-        }
-        return false;
+    private boolean hasNoPiecesTo(Position newPosition, Board board){
+        return !board.hasPiecesBetween(position, newPosition);
     }
 
-    public void wasUsedToCastle(Position newPosition){
+    public void wasUsedToCastle(Position newPosition, Board board){
+        Piece[][] tempBoard = board.getBoard();
+        tempBoard[position.getX()][position.getY()] = null;
+        tempBoard[newPosition.getX()][newPosition.getY()] = this;
         setPosition(newPosition);
         wasMoved = true;
     }
-
     public boolean wasMoved() {
         return wasMoved;
     }
@@ -67,6 +61,6 @@ public class Rook implements Piece {
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "WR" : "BR";
+        return colour == Colour.WHITE ? "\u001B[37mR\u001B[0m" : "\u001B[30mR\u001B[0m";
     }
 }

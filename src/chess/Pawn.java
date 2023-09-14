@@ -20,60 +20,45 @@ public class Pawn implements Piece{
 
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
-        if (isMovingTwoSquares(newPosition, board) || isMovingOneSquare(newPosition, board) || isAttacking(newPosition, board)){
-            return true;
-        }
-        return false;
+        return isMovingOneSquare(newPosition, board) ||
+                isMovingTwoSquares(newPosition, board) ||
+                isAttacking(newPosition, board);
+    }
+
+    private boolean isAttacking(Position newPosition, Board board){
+        return board.isADiagPos(position, newPosition) &&
+                movesOneForward(newPosition) &&
+                board.getPiece(newPosition) != null &&
+                board.getPiece(newPosition).getColour() != colour;
     }
 
     private boolean isMovingOneSquare(Position newPosition, Board board){
-        return isMovingOnTheSameColumn(newPosition) && movesOneFwd(newPosition) && board.getPiece(newPosition) == null;
+        return board.isSameColumn(position, newPosition) &&
+                movesOneForward(newPosition) &&
+                board.getPiece(newPosition) == null;
     }
 
     private boolean isMovingTwoSquares(Position newPosition, Board board){
-        if (isAtInitPos() && isMovingOnTheSameColumn(newPosition) && movesTwoFwd(newPosition)){
-            if (colour == Colour.BLACK){
-                for (int i = position.getX()-1; i >= newPosition.getX(); i--) {
-                    if (board.getPiece(new Position(i, position.getY())) != null){
-                        return false;
-                    }
-                }
-            } else {
-                for (int i = position.getX()+1; i <= newPosition.getX(); i++) {
-                    if (board.getPiece(new Position(i, position.getY())) != null){
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
+        return isAtInitPos() &&
+                board.isSameColumn(position, newPosition) &&
+                movesTwoForward(newPosition) &&
+                !board.hasPiecesBetween(position, newPosition) &&
+                board.getPiece(newPosition) == null;
     }
 
-    public boolean isAtEndOfBoard(Colour colour){
-        if (colour == Colour.BLACK){
-            return position.getX() == 0;
-        } else {
-            return position.getX()  == 7;
-        }
-    }
 
     private boolean isAtInitPos(){
-        if (colour == Colour.WHITE){
-            return position.getX()  == 1;
-        } else {
-            return position.getX()  == 6;
-        }
+        return colour == Colour.WHITE ? position.getX()  == 1 : position.getX()  == 6;
     }
 
-    private boolean movesTwoFwd(Position newPosition){
+    private boolean movesTwoForward(Position newPosition){
         if (colour == Colour.BLACK){
             return newPosition.getX() < position.getX() && Math.abs(newPosition.getX() - position.getX()) == 2;
         } else {
             return newPosition.getX() > position.getX() && Math.abs(newPosition.getX() - position.getX()) == 2;
         }
     }
-    private boolean movesOneFwd(Position newPosition){
+    private boolean movesOneForward(Position newPosition){
         if (colour == Colour.BLACK){
             return newPosition.getX() < position.getX() && Math.abs(newPosition.getX() - position.getX()) == 1;
         } else {
@@ -81,17 +66,10 @@ public class Pawn implements Piece{
         }
     }
 
-    private boolean isMovingOnTheSameColumn(Position newPosition){
-        return position.getY() == newPosition.getY();
+    public boolean isAtEndOfBoard(Colour colour){
+        return colour == Colour.BLACK ? position.getX() == 0 : position.getX()  == 7;
     }
 
-    private boolean isMovingOnDiagonal(Position newPosition){
-        return Math.abs(position.getY() - newPosition.getY()) == 1 && movesOneFwd(newPosition);
-    }
-
-    private boolean isAttacking(Position newPosition, Board board){
-        return isMovingOnDiagonal(newPosition) && board.getPiece(newPosition) != null && board.getPiece(newPosition).getColour() != colour;
-    }
     @Override
     public Colour getColour() {
         return this.colour;
@@ -109,6 +87,6 @@ public class Pawn implements Piece{
 
     @Override
     public String toString() {
-        return colour == Colour.WHITE ? "WP" : "BP";
+        return colour == Colour.WHITE ? "\u001B[37mP\u001B[0m" : "\u001B[30mP\u001B[0m";
     }
 }
