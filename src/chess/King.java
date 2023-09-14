@@ -42,19 +42,19 @@ public class King implements Piece {
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
         return canBeMovedTo(newPosition, board) &&
-                isChecked(newPosition, board) &&
+                isSafePosition(newPosition, board) &&
                 isMovingOneSquare(newPosition, board) &&
                 hasMoreThanOneSquareToOppKing(newPosition);
     }
 
     public boolean isChecked(Board board){
-        return isChecked(position, board);
+        return !isSafePosition(position, board);
     }
 
-    private boolean isChecked(Position newPosition, Board board){ //checks if king will be checked at the newPosition
+    private boolean isSafePosition(Position newPosition, Board board){ //checks if king will be checked at the newPosition
         List<Piece> opponentPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
         for (Piece piece : opponentPieces){
-            if (piece.getColour() != colour && piece.canMoveTo(newPosition, board)){
+            if (piece.canMoveTo(newPosition, board)){
                 return false;
             }
         }
@@ -88,8 +88,7 @@ public class King implements Piece {
         return !wasMoved &&
                 isMovingTwoSquares(newPosition) &&
                 isRookAtInitPos(newPosition, board) &&
-                hasMoreThanOneSquareToOppKing(newPosition) &&
-                positionsAreNotChecked(newPosition, board);
+                hasMoreThanOneSquareToOppKing(newPosition);
     }
 
     private boolean isMovingTwoSquares(Position newPosition){ //checks if king is moving two squares from
@@ -122,18 +121,25 @@ public class King implements Piece {
 
     private boolean hasEmptyPathThroughRook(Position rookPosition, Board board){ //checks if between king and rook
                                                                                 // are no other pieces
-        return !board.hasPiecesBetween(position, rookPosition);
+        if (!board.hasPiecesBetween(position, rookPosition)){
+            if (rookPosition.getY() < position.getY()){
+                return positionsAreNotChecked(new Position(position.getX(), position.getY() - 3), board);
+            } else {
+                return positionsAreNotChecked(new Position(position.getX(), position.getY() + 3), board);
+            }
+        }
+        return false;
     }
     private boolean positionsAreNotChecked (Position newPosition, Board board){ //checks if king is checked at current
                                                     // position or goes through chess while castling
         List<Position> positionsToCheck = board.getPositionsBetween(position, newPosition);
         positionsToCheck.add(position);
         for (Position pos : positionsToCheck){
-            if (isChecked(pos, board)){
-                return false;
+            if (isSafePosition(pos, board)){
+                return true;
             }
         }
-        return true;
+        return false;
     }
     public List<Piece> piecesThatThreatensKing(Board board){ //checks if at current position, king is checked
         List<Piece> opponentsPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();

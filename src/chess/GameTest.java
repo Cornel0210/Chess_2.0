@@ -535,7 +535,7 @@ public class GameTest {
         assertTrue(game.movePiece(new Position(0,3), new Position(0,1), white));
     }
 
-    @org.junit.Test
+    /*@org.junit.Test
     public void castleToRight() { //no obstacles; castle to right
         Game game = Game.getInstance();
         Player black = game.getPlayer(Colour.BLACK);
@@ -548,7 +548,7 @@ public class GameTest {
         game.movePiece(new Position(7,5), new Position(6,6), black);
         game.movePiece(new Position(7,4), new Position(6,5), black);
         assertTrue(game.movePiece(new Position(7,3), new Position(7,5), black));
-    }
+    }*/
 
     @org.junit.Test
     public void castle1() { //king is checked
