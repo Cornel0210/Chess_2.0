@@ -42,22 +42,34 @@ public class King implements Piece {
     @Override
     public boolean canMoveTo(Position newPosition, Board board) {
         return canBeMovedTo(newPosition, board) &&
-                isSafePosition(newPosition, board) &&
+                !isChecked(board) &&
                 isMovingOneSquare(newPosition, board) &&
                 hasMoreThanOneSquareToOppKing(newPosition);
     }
 
     public boolean isChecked(Board board){
-        return !isSafePosition(position, board);
+        List<Piece> opponentPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
+        for (Piece piece : opponentPieces) {
+            if (piece.canMoveTo(position, board)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isSafePosition(Position newPosition, Board board){ //checks if king will be checked at the newPosition
         List<Piece> opponentPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
+        Position current = position;
+        Piece removedPiece = board.getPiece(newPosition);
+        setPosition(newPosition);
+        board.update(current, newPosition);
         for (Piece piece : opponentPieces){
             if (piece.canMoveTo(newPosition, board)){
+                board.undo(current, newPosition, this, removedPiece);
                 return false;
             }
         }
+        board.undo(current, newPosition, this, removedPiece);
         return true;
     }
 
@@ -157,7 +169,7 @@ public class King implements Piece {
 
         if (opponentAttackers.size() >= 2){
             for (Position pos : surroundingPositions){
-                if (canMoveTo(pos,board)){
+                if (isSafePosition(pos,board)){
                     return false;
                 }
             }
@@ -166,7 +178,7 @@ public class King implements Piece {
 
         if (opponentAttackers.size() == 1){
             for (Position pos : surroundingPositions){
-                if (canMoveTo(pos,board)){
+                if (isSafePosition(pos,board)){
                     return false;
                 }
             }
@@ -206,5 +218,23 @@ public class King implements Piece {
     @Override
     public String toString() {
         return colour == Colour.WHITE ? "\u001B[37mK\u001B[0m" : "\u001B[30mK\u001B[0m";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        King king = (King) o;
+
+        if (!getPosition().equals(king.getPosition())) return false;
+        return getColour() == king.getColour();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPosition().hashCode();
+        result = 31 * result + getColour().hashCode();
+        return result;
     }
 }

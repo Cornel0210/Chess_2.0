@@ -41,55 +41,25 @@ public class Board {
     }
 
     public boolean hasPiecesBetween(Position initPosition, Position newPosition){
-        List<Piece> pieces = getPiecesBetween(initPosition, newPosition, Colour.WHITE);
-        pieces.addAll(getPiecesBetween(initPosition, newPosition, Colour.BLACK));
+        List<Piece> pieces = getPiecesBetween(initPosition, newPosition);
+        pieces.addAll(getPiecesBetween(initPosition, newPosition));
         return pieces.size()>0;
     }
 
-    public List<Piece> getPiecesBetween(Position initPosition, Position newPosition, Colour playerColour){
+    public List<Piece> getPiecesBetween(Position initPosition, Position newPosition){
 
         List<Piece> pieces = new LinkedList<>();
         List<Position> positionsBetween = getPositionsBetween(initPosition, newPosition);
         for (Position pos : positionsBetween){
             Piece piece = getPiece(pos);
-            if (piece != null && piece.getColour() != playerColour) {
+            if (piece != null) {
                 pieces.add(piece);
             }
         }
         return pieces;
     }
 
-    public boolean isSameRow(Position initPosition, Position newPosition){
-        return initPosition.getX() == newPosition.getX();
-    }
 
-    public boolean isSameColumn(Position initPosition, Position newPosition){
-        return initPosition.getY() == newPosition.getY();
-    }
-
-    public boolean isADiagPos(Position initPosition, Position newPosition){
-        return Math.abs(initPosition.getX() - newPosition.getX()) == Math.abs(initPosition.getY() - newPosition.getY());
-    }
-    public void allocatePieces(Player player1, Player player2){
-
-        for (Piece[] pieces : board) {
-            for (Piece piece : pieces) {
-                if (piece != null) {
-                    if (piece.getColour() == player1.getColour()) {
-                        player1.addAvailablePiece(piece);
-                    } else {
-                        player2.addAvailablePiece(piece);
-                    }
-                }
-            }
-        }
-        player1.getAvailablePieces().remove(player1.getKing());
-        player2.getAvailablePieces().remove(player2.getKing());
-    }
-
-    public Piece getPiece(Position position){
-        return board[position.getX()][position.getY()];
-    }
 
     public List<Position> getSurroundingPositions(Position kingPos){
         List<Position> surroundingPositions = new LinkedList<>();
@@ -101,6 +71,7 @@ public class Board {
                 }
             }
         }
+        surroundingPositions.remove(kingPos);
         return surroundingPositions;
     }
 
@@ -176,7 +147,37 @@ public class Board {
 
         return positions;
     }
+    public boolean isSameRow(Position initPosition, Position newPosition){
+        return initPosition.getX() == newPosition.getX();
+    }
 
+    public boolean isSameColumn(Position initPosition, Position newPosition){
+        return initPosition.getY() == newPosition.getY();
+    }
+
+    public boolean isADiagPos(Position initPosition, Position newPosition){
+        return Math.abs(initPosition.getX() - newPosition.getX()) == Math.abs(initPosition.getY() - newPosition.getY());
+    }
+    public void allocatePieces(Player player1, Player player2){
+
+        for (Piece[] pieces : board) {
+            for (Piece piece : pieces) {
+                if (piece != null) {
+                    if (piece.getColour() == player1.getColour()) {
+                        player1.addAvailablePiece(piece);
+                    } else {
+                        player2.addAvailablePiece(piece);
+                    }
+                }
+            }
+        }
+        player1.getAvailablePieces().remove(player1.getKing());
+        player2.getAvailablePieces().remove(player2.getKing());
+    }
+
+    public Piece getPiece(Position position){
+        return board[position.getX()][position.getY()];
+    }
     public Piece[][] getBoard() {
         return board;
     }
@@ -184,31 +185,41 @@ public class Board {
     public boolean isEmptyCell (Position position){
         return board[position.getX()][position.getY()] == null;
     }
-    public void updateBoard(Position oldPosition, Piece piece){
+    public void update(Position oldPosition, Position newPosition){
+        Piece pieceToMove = getPiece(oldPosition);
         board[oldPosition.getX()][oldPosition.getY()] = null;
-        board[piece.getPosition().getX()][piece.getPosition().getY()] = piece;
+        board[newPosition.getX()][newPosition.getY()] = pieceToMove;
         System.out.println(this);
     }
 
     public void update(Position oldPosition, Position newPosition, Player opponent){
-        Piece pieceToMove = getPiece(oldPosition);
         Piece removedPiece = getPiece(newPosition);
-        board[oldPosition.getX()][oldPosition.getY()] = null;
-        board[newPosition.getX()][newPosition.getY()] = pieceToMove;
+        update(oldPosition, newPosition);
         opponent.addRemovedPiece(removedPiece);
+    }
+
+    public void undo(Position oldPosition, Position newPosition, Piece pieceToMove, Piece removedPiece){
+        board[oldPosition.getX()][oldPosition.getY()] = pieceToMove;
+        pieceToMove.setPosition(oldPosition);
+        board[newPosition.getX()][newPosition.getY()] = removedPiece;
         System.out.println(this);
     }
 
     public void undo(Position oldPosition, Position newPosition, Piece pieceToMove, Piece removedPiece, Player opponent){
-        board[oldPosition.getX()][oldPosition.getY()] = pieceToMove;
-        pieceToMove.setPosition(oldPosition);
-        board[newPosition.getX()][newPosition.getY()] = removedPiece;
+        undo(oldPosition, newPosition, pieceToMove, removedPiece);
         opponent.undoRemovedPiece();
-        System.out.println(this);
     }
 
+    public void resetBoard(Piece[][] customBoard, Player player1, Player player2){
+        board = customBoard;
+        player1.resetListsOfPieces();
+        player2.resetListsOfPieces();
+        allocatePieces(player1, player2);
+    }
     public void resetBoard(Player player1, Player player2){
         initializeBoard();
+        player1.resetListsOfPieces();
+        player2.resetListsOfPieces();
         allocatePieces(player1, player2);
     }
 

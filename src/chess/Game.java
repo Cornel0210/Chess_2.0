@@ -6,6 +6,7 @@ public class Game {
     private final Player player1;
     private final Player player2;
     private boolean isWhite;
+    private boolean isEnd;
 
     public Game() {
         board = new Board();
@@ -45,6 +46,9 @@ public class Game {
             board.undo(oldPosition, newPosition, pieceToMove, removedPiece, opponent);
             flag = false;
         }
+        if (opponent.getKing().isInCheckMate(board)){
+            isEnd = true;
+        }
         return flag;
     }
 
@@ -63,8 +67,17 @@ public class Game {
         return player1.getColour() == colour ? player1 : player2;
     }
 
+    public void setCustomBoard(Piece[][] customBoard){
+        board.resetBoard(customBoard, player1, player2);
+        isEnd = false;
+    }
     public void resetBoard(){
+        isEnd = false;
         board.resetBoard(player1, player2);
+    }
+
+    public boolean isEnd() {
+        return isEnd;
     }
 
     public static Game getInstance() {
