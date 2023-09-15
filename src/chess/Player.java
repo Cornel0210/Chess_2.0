@@ -2,7 +2,6 @@ package chess;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Player {
     private final String name;
@@ -20,26 +19,7 @@ public class Player {
     }
 
     public Position move(){
-        int x = getInt();
-        int y = getInt();
-        Position pos = new Position(x,y);
-        while (!pos.isOnBoard()){
-            x = getInt();
-            y = getInt();
-            pos = new Position(x,y);
-        }
-        return pos;
-    }
-
-
-    private int getInt(){
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextInt()){
-            int i = scanner.nextInt();
-            scanner.nextLine();
-            return i;
-        }
-        return -1;
+        return Input.getInstance().getPosition();
     }
 
     public void addAvailablePiece(Piece piece){

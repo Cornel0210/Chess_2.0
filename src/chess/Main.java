@@ -2,6 +2,8 @@ package chess;
 
 public class Main {
     public static void main(String[] args) {
-        Game.getInstance().play();
+        System.out.println(Input.getInstance().getShiftedPiece());
+
+        //Game.getInstance().play();
     }
 }
