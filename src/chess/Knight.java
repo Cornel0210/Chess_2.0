@@ -9,20 +9,30 @@ public class Knight implements Piece {
         this.colour = colour;
     }
 
+
     @Override
-    public boolean moveTo(Position newPosition, Board board) {
-        if (canMoveTo(newPosition, board)){
-            setPosition(newPosition);
-            return true;
-        }
-        return false;
+    public void moveTo(Position newPosition, Board board) {
+        board.getChessBoard()[position.getX()][position.getY()] = null;
+        setPosition(newPosition);
+        board.getChessBoard()[position.getX()][position.getY()] = this;
     }
 
     @Override
-    public boolean canMoveTo(Position newPosition, Board board) {
-        if (isValid(newPosition)){
-            Piece piece = board.getPiece(newPosition);
-            return piece == null || piece.getColour() != colour;
+    public boolean canMoveTo(Position newPosition, Board board, Player player) {
+        if (colour == player.getColour() &&
+                this.isValid(newPosition) &&
+                Piece.super.isValid(newPosition, board, colour)){
+
+            Piece opponentPiece = board.getPiece(newPosition);
+            Position currentPosition = position;
+            moveTo(newPosition, board);
+            King king = player.getKing();
+            if (king.isChecked()){
+                moveTo(currentPosition, board);
+                board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+                return false;
+            }
+            return true;
         }
         return false;
     }

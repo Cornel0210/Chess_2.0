@@ -178,13 +178,14 @@ public class Board {
     public Piece getPiece(Position position){
         return board[position.getX()][position.getY()];
     }
-    public Piece[][] getBoard() {
+    public Piece[][] getChessBoard() {
         return board;
     }
 
     public boolean isEmptyCell (Position position){
         return board[position.getX()][position.getY()] == null;
     }
+
     public void update(Position oldPosition, Position newPosition){
         Piece pieceToMove = getPiece(oldPosition);
         board[oldPosition.getX()][oldPosition.getY()] = null;

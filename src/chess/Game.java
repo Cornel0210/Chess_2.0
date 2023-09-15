@@ -18,45 +18,38 @@ public class Game {
 
     public void play(){
         Player current;
+        Player opponent;
         System.out.println(board);
-        while (true){
+        while (!isEnd){
             current = isWhite ? player1 : player2;
+            opponent = isWhite ? player2 : player1;
             System.out.println(current.getName() + " has to move");
-            Position from = current.move();
-            Position to = current.move();
-            while (!movePiece(from, to, current)){
-                from = current.move();
-                to = current.move();
+            Position from = current.getPosition();
+            Position to = current.getPosition();
+            while (movePiece(from, to, current, opponent)){
+                from = current.getPosition();
+                to = current.getPosition();
             }
             isWhite = !isWhite;
         }
     }
 
-    public boolean movePiece(Position oldPosition, Position newPosition, Player player){
+    public boolean movePiece(Position oldPosition, Position newPosition, Player player, Player opponent){
         Piece pieceToMove = board.getPiece(oldPosition);
         Piece removedPiece = board.getPiece(newPosition);
-        Player opponent = getOpponent(player.getColour());
-        boolean flag = false;
 
-        if (pieceBelongsToPlayer(pieceToMove, player)){
-             flag = pieceToMove.moveTo(newPosition, board);
-            board.update(oldPosition, newPosition, opponent);
+        if (!pieceToMove.canMoveTo(newPosition, board, player)) {
+            System.out.println("You cannot perform that move.");
+            return false;
+        } else {
+            pieceToMove.moveTo(newPosition, board);
+            opponent.addRemovedPiece(removedPiece);
         }
-        if (player.getKing().isChecked(board)){
-            board.undo(oldPosition, newPosition, pieceToMove, removedPiece, opponent);
-            flag = false;
-        }
-        if (opponent.getKing().isInCheckMate(board)){
+        King opponentKing = opponent.getKing();
+        if (opponentKing.isInCheckMate(board)){
             isEnd = true;
         }
-        return flag;
-    }
-
-    private boolean pieceBelongsToPlayer(Piece piece, Player player){
-        if (piece != null){
-            return piece.getColour() == player.getColour();
-        }
-        return false;
+        return true;
     }
 
     public Player getOpponent (Colour colour){

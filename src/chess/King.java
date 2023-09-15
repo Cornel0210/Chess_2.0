@@ -15,6 +15,47 @@ public class King implements Piece {
     }
 
     @Override
+    public void moveTo(Position newPosition, Board board) {
+        temporaryMoveTo(newPosition, board);
+        wasMoved = true;
+    }
+
+    public void temporaryMoveTo(Position newPosition, Board board) {
+        board.getChessBoard()[position.getX()][position.getY()] = null;
+        setPosition(newPosition);
+        board.getChessBoard()[position.getX()][position.getY()] = this;
+    }
+
+    @Override
+    public boolean canMoveTo(Position newPosition, Board board, Player player) {
+
+        if (Piece.super.isValid(newPosition, board, colour) &&
+                isMovingOneSquare(newPosition, board) &&
+                hasMoreThanOneSquareToOppKing(newPosition)){
+
+            Piece opponentPiece = board.getPiece(newPosition);
+            Position currentPosition = position;
+            temporaryMoveTo(newPosition, board);
+            King king = player.getKing();
+            if (king.isChecked()){
+                temporaryMoveTo(currentPosition, board);
+                board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public boolean isChecked(){
+        System.out.println("is checked method has to be implemented");
+        return false;
+    }
+
+
+   /* @Override
     public boolean moveTo(Position newPosition, Board board) {
         if (canMoveTo(newPosition, board)){
             setPosition(newPosition);
@@ -37,15 +78,15 @@ public class King implements Piece {
             return true;
         }
         return false;
-    }
+    }*/
 
-    @Override
+   /* @Override
     public boolean canMoveTo(Position newPosition, Board board) {
-        return canBeMovedTo(newPosition, board) &&
+        return isValid(newPosition, board) &&
                 !isChecked(board) &&
                 isMovingOneSquare(newPosition, board) &&
                 hasMoreThanOneSquareToOppKing(newPosition);
-    }
+    }*/
 
     public boolean isChecked(Board board){
         List<Piece> opponentPieces = Game.getInstance().getOpponent(colour).getAvailablePieces();
@@ -73,13 +114,8 @@ public class King implements Piece {
         return true;
     }
 
-    private boolean canBeMovedTo(Position newPosition, Board board){ //checks if the newPosition is empty or there is an
-                                                                // opponent's piece
-        return (board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour);
-    }
-
     private boolean isMovingOneSquare(Position newPosition, Board board){ //checks if king is moving one square from the initial pos
-         return board.getSurroundingPositions(newPosition).contains(position) && position != newPosition;
+         return board.getSurroundingPositions(newPosition).contains(position);
     }
 
     private boolean hasMoreThanOneSquareToOppKing(Position newPosition){ //calculating the distance between the kings in order

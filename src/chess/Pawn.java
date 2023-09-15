@@ -10,19 +10,31 @@ public class Pawn implements Piece{
     }
 
     @Override
-    public boolean moveTo(Position newPosition, Board board) {
-        if (canMoveTo(newPosition, board)){
-            setPosition(newPosition);
-            return true;
-        }
-        return false;
+    public void moveTo(Position newPosition, Board board) {
+        board.getChessBoard()[position.getX()][position.getY()] = null;
+        setPosition(newPosition);
+        board.getChessBoard()[position.getX()][position.getY()] = this;
     }
 
     @Override
-    public boolean canMoveTo(Position newPosition, Board board) {
-        return isMovingOneSquare(newPosition, board) ||
-                isMovingTwoSquares(newPosition, board) ||
-                isAttacking(newPosition, board);
+    public boolean canMoveTo(Position newPosition, Board board, Player player) {
+        if (colour == player.getColour() &&
+                (isMovingOneSquare(newPosition, board) ||
+                 isMovingTwoSquares(newPosition, board) ||
+                 isAttacking(newPosition, board))){
+
+            Piece opponentPiece = board.getPiece(newPosition);
+            Position currentPosition = position;
+            moveTo(newPosition, board);
+            King king = player.getKing();
+            if (king.isChecked()){
+                moveTo(currentPosition, board);
+                board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     private boolean isAttacking(Position newPosition, Board board){
@@ -66,7 +78,7 @@ public class Pawn implements Piece{
         }
     }
 
-    public boolean isAtEndOfBoard(Colour colour){
+    public boolean isAtEndOfBoard(){
         return colour == Colour.BLACK ? position.getX() == 0 : position.getX()  == 7;
     }
 

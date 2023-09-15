@@ -18,7 +18,7 @@ public class Player {
         removedPieces = new LinkedList<>();
     }
 
-    public Position move(){
+    public Position getPosition(){
         return Input.getInstance().getPosition();
     }
 
