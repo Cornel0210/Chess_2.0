@@ -19,7 +19,9 @@ public class Bishop implements Piece{
     public void undo(Position oldPos, Position newPos, Board board, Piece opponentPiece, Player opponent) {
         setPosition(oldPos);
         board.getChessBoard()[oldPos.getX()][oldPos.getY()] = this;
-        opponent.undoRemovedPiece();
+        if (opponentPiece!= null){
+            opponent.undoRemovedPiece();
+        }
         board.getChessBoard()[newPos.getX()][newPos.getY()] = opponentPiece;
     }
     @Override

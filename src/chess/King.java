@@ -1,6 +1,5 @@
 package chess;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class King implements Piece {
@@ -36,8 +35,16 @@ public class King implements Piece {
     public void undo(Position oldPos, Position newPos, Board board, Piece opponentPiece, Player opponent) {
         setPosition(oldPos);
         board.getChessBoard()[oldPos.getX()][oldPos.getY()] = this;
-        opponent.undoRemovedPiece();
+        if (opponentPiece!= null){
+            opponent.undoRemovedPiece();
+        }
         board.getChessBoard()[newPos.getX()][newPos.getY()] = opponentPiece;
+    }
+
+    private void moveKing(Position newPosition, Board board) {
+        board.getChessBoard()[position.getX()][position.getY()] = null;
+        setPosition(newPosition);
+        board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
     }
 
     @Override
@@ -59,7 +66,18 @@ public class King implements Piece {
             return true;
         }
 
-        return canCastle(newPosition, board, currentPlayer, opponent);
+        if (canCastle(newPosition, board, currentPlayer, opponent)){
+            Position currentPosition = position;
+            moveKing(newPosition, board);
+            King king = currentPlayer.getKing();
+            if (king.isChecked(board, currentPlayer, opponent)){
+                undo(currentPosition, newPosition, board, null, opponent);
+                return false;
+            }
+            undo(currentPosition, newPosition, board, null, opponent);
+            return true;
+        }
+        return false;
     }
 
     public boolean isChecked(Board board, Player currentPlayer, Player opponent){
@@ -101,8 +119,8 @@ public class King implements Piece {
                 hasMoreThanOneSquareToOppKing(newPosition, opponent)){
 
             Rook rook = getRook(newPosition, currentPlayer);
-            if (!rook.wasMoved()){
-                return !isPathToRookChecked(rook, board, currentPlayer, opponent);
+            if (!rook.wasMoved() && currentPlayer.getAvailablePieces().contains(rook)){
+                return isPathForCastleSafe(rook, board, currentPlayer, opponent);
             }
         }
         return false;
@@ -126,19 +144,21 @@ public class King implements Piece {
         return !board.hasPiecesBetween(position, rookPos);
     }
 
-    private boolean isPathToRookChecked(Rook rook, Board board, Player currentPlayer,  Player opponent){
+    private boolean isPathForCastleSafe(Rook rook, Board board, Player currentPlayer, Player opponent){
         if (hasEmptyPathThroughRook(rook, board)){
             Position rookPos = rook.getPosition();
-            List<Position> posBetween =  board.getPositionsBetween(position, rookPos);
-            List<Piece> opponentPieces = opponent.getAvailablePieces();
-
-            for (Position position : posBetween){
-                for (Piece piece : opponentPieces){
-                    if (piece.canMoveTo(position, board, currentPlayer, opponent)){
-                        return true;
-                    }
+            List<Position> posBetween;
+            if (rookPos.getY() > position.getY()){
+                posBetween = board.getPositionsBetween(position, new Position(position.getX(), 6));
+            } else {
+                posBetween =  board.getPositionsBetween(position, rookPos);
+            }
+            for (Position posToCheck : posBetween){
+                if (positionIsChecked(posToCheck, board, currentPlayer, opponent)){
+                    return false;
                 }
             }
+            return true;
         }
         return false;
     }

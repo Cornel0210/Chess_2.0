@@ -1271,6 +1271,110 @@ public class GameTest {
         assertTrue(game.movePiece(new Position(0,3), new Position(0,4), p1, p2));
         System.out.println(p2.getRemovedPieces());
     }
+
+    /**
+     * castle
+     */
+    @org.junit.Test
+    public void moveKing10() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[0][0] = new Rook(new Position(0, 0), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertTrue(game.movePiece(new Position(0,3), new Position(0,1), p1, p2));
+    }
+
+    @org.junit.Test
+    public void moveKing11() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[0][7] = new Rook(new Position(0, 7), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertTrue(game.movePiece(new Position(0,3), new Position(0,5), p1, p2));
+    }
+    @org.junit.Test
+    public void moveKing12() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[7][7] = new Rook(new Position(7, 7), Colour.BLACK);
+        customBoard[0][5] = new Queen(new Position(0, 5), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertFalse(game.movePiece(new Position(7,3), new Position(7,5), p2, p1));
+    }
+    @org.junit.Test
+    public void moveKing13() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[7][7] = new Rook(new Position(7, 7), Colour.BLACK);
+        customBoard[4][0] = new Queen(new Position(4, 0), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertFalse(game.movePiece(new Position(7,3), new Position(7,5), p2, p1));
+    }
+    @org.junit.Test
+    public void moveKing14() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[7][7] = new Rook(new Position(7, 7), Colour.BLACK);
+        customBoard[3][0] = new Queen(new Position(3, 0), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertFalse(game.movePiece(new Position(7,3), new Position(7,5), p2, p1));
+    }
+    @org.junit.Test
+    public void moveKing15() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[7][0] = new Rook(new Position(7, 0), Colour.BLACK);
+        customBoard[7][7] = new Rook(new Position(7, 7), Colour.BLACK);
+        customBoard[3][0] = new Queen(new Position(3, 0), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertTrue(game.movePiece(new Position(7,3), new Position(7,1), p2, p1));
+    }
+    @org.junit.Test
+    public void moveKing16() {
+        Piece[][] customBoard = new Piece[8][8];
+        customBoard[7][0] = new Rook(new Position(7, 0), Colour.BLACK);
+        customBoard[7][7] = new Rook(new Position(7, 7), Colour.BLACK);
+        customBoard[3][0] = new Queen(new Position(3, 0), Colour.WHITE);
+        customBoard[6][0] = new Pawn(new Position(6, 0), Colour.WHITE);
+        customBoard[0][3] = new King(new Position(0, 3), Colour.WHITE);
+        customBoard[7][3] = new King(new Position(7, 3), Colour.BLACK);
+        game = new Game(customBoard);
+        game.printBoard();
+        Player p1 = game.getPlayer(Colour.WHITE);
+        Player p2 = game.getPlayer(Colour.BLACK);
+
+        assertFalse(game.movePiece(new Position(7,3), new Position(7,1), p2, p1));
+    }
     @After
     public void print(){
         game.printBoard();
