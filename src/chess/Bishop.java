@@ -45,26 +45,6 @@ public class Bishop implements Piece{
         return false;
     }
 
-    /*
-    @Override
-    public boolean moveTo(Position newPosition, Board board) {
-        if (canMoveTo(newPosition, board)){
-            setPosition(newPosition);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canMoveTo(Position newPosition, Board board) {
-        if(board.isADiagPos(position, newPosition) &&
-                hasNoPiecesTo(newPosition, board)) {
-
-            return board.isEmptyCell(newPosition) || board.getPiece(newPosition).getColour() != colour;
-        }
-        return false;
-    }*/
-
     private boolean hasNoPiecesTo(Position newPosition, Board board){
        return !board.hasPiecesBetween(position, newPosition);
     }

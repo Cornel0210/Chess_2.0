@@ -59,8 +59,6 @@ public class Board {
         return pieces;
     }
 
-
-
     public List<Position> getSurroundingPositions(Position kingPos){
         List<Position> surroundingPositions = new LinkedList<>();
         for (int i = kingPos.getX()-1; i <= kingPos.getX()+1; i++) {
@@ -199,48 +197,6 @@ public class Board {
     }
     public Piece[][] getChessBoard() {
         return board;
-    }
-
-    public boolean isEmptyCell (Position position){
-        return board[position.getX()][position.getY()] == null;
-    }
-
-    public void update(Position oldPosition, Position newPosition){
-        Piece pieceToMove = getPiece(oldPosition);
-        board[oldPosition.getX()][oldPosition.getY()] = null;
-        board[newPosition.getX()][newPosition.getY()] = pieceToMove;
-        System.out.println(this);
-    }
-
-    public void update(Position oldPosition, Position newPosition, Player opponent){
-        Piece removedPiece = getPiece(newPosition);
-        update(oldPosition, newPosition);
-        opponent.addRemovedPiece(removedPiece);
-    }
-
-    public void undo(Position oldPosition, Position newPosition, Piece pieceToMove, Piece removedPiece){
-        board[oldPosition.getX()][oldPosition.getY()] = pieceToMove;
-        pieceToMove.setPosition(oldPosition);
-        board[newPosition.getX()][newPosition.getY()] = removedPiece;
-        System.out.println(this);
-    }
-
-    public void undo(Position oldPosition, Position newPosition, Piece pieceToMove, Piece removedPiece, Player opponent){
-        undo(oldPosition, newPosition, pieceToMove, removedPiece);
-        opponent.undoRemovedPiece();
-    }
-
-    public void resetBoard(Piece[][] customBoard, Player player1, Player player2){
-        board = customBoard;
-        player1.resetListsOfPieces();
-        player2.resetListsOfPieces();
-        allocatePieces(player1, player2);
-    }
-    public void resetBoard(Player player1, Player player2){
-        initializeBoard();
-        player1.resetListsOfPieces();
-        player2.resetListsOfPieces();
-        allocatePieces(player1, player2);
     }
 
     @Override

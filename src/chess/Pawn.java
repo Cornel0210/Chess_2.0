@@ -11,6 +11,22 @@ public class Pawn implements Piece{
 
     @Override
     public void moveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
+        if (isAtEndOfBoard(newPosition)){
+            opponent.addRemovedPiece(board.getPiece(newPosition));
+            String input = Input.getInstance().getShiftedPiece();
+            Piece newPiece = getPiece(input, newPosition);
+            board.getChessBoard()[position.getX()][position.getY()] = null;
+            setPosition(newPosition);
+            board.getChessBoard()[newPosition.getX()][newPosition.getY()] = newPiece;
+        } else {
+            opponent.addRemovedPiece(board.getPiece(newPosition));
+            board.getChessBoard()[position.getX()][position.getY()] = null;
+            setPosition(newPosition);
+            board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
+        }
+    }
+
+    private void movePawn(Position newPosition, Board board, Player opponent){
         opponent.addRemovedPiece(board.getPiece(newPosition));
         board.getChessBoard()[position.getX()][position.getY()] = null;
         setPosition(newPosition);
@@ -35,7 +51,7 @@ public class Pawn implements Piece{
 
             Piece opponentPiece = board.getPiece(newPosition);
             Position currentPosition = position;
-            moveTo(newPosition, board, currentPlayer, opponent);
+            movePawn(newPosition, board, opponent);
             King king = currentPlayer.getKing();
             if (king.isChecked(board, currentPlayer, opponent)){
                 undo(currentPosition, newPosition, board, opponentPiece, opponent);
@@ -88,8 +104,22 @@ public class Pawn implements Piece{
         }
     }
 
-    public boolean isAtEndOfBoard(){
-        return colour == Colour.BLACK ? position.getX() == 0 : position.getX()  == 7;
+    private Piece getPiece(String input, Position newPosition){
+        switch (input.trim().toLowerCase()){
+            case "rook":
+                return new Rook(newPosition, colour);
+            case "bishop":
+                return new Bishop(newPosition, colour);
+            case "knight":
+                return new Knight(newPosition, colour);
+            case "queen":
+                return new Queen(newPosition, colour);
+        }
+        return null;
+    }
+
+    public boolean isAtEndOfBoard(Position newPosition){
+        return colour == Colour.BLACK ? newPosition.getX() == 0 : newPosition.getX()  == 7;
     }
 
     @Override
