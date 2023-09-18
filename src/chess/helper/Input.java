@@ -1,9 +1,18 @@
-package chess;
+package chess.helper;
 
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * Input class is used as a singleton in order to have only one instance that can be used for reading inputs from the
+ * keyboard.
+ * Its role is to retrieve valid positions(a position is considered valid if it is on the board
+ * (its coordinates are between [0-7])), and also the name of the pieces that the pawns will be changed into when they
+ * reach the last row.
+ */
+
 
 public class Input {
     private static Input INSTANCE;

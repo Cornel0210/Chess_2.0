@@ -1,4 +1,4 @@
-package chess;
+package chess.helper;
 
 public class Position {
     private final int x;

@@ -1,6 +1,8 @@
 package chess;
 
-import org.junit.After;
+import chess.helper.Colour;
+import chess.helper.Position;
+import chess.pieces.*;
 
 import static org.junit.Assert.*;
 
@@ -948,7 +950,7 @@ public class GameTest {
         assertFalse(game.movePiece(new Position(5,6), new Position(7,6), p1, p2));
     }
 
-    @After
+    @org.junit.After
     public void print(){
         game.printBoard();
     }

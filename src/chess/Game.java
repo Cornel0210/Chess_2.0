@@ -1,5 +1,10 @@
 package chess;
 
+import chess.helper.Colour;
+import chess.helper.Position;
+import chess.pieces.King;
+import chess.pieces.Piece;
+
 import java.util.List;
 
 public class Game {

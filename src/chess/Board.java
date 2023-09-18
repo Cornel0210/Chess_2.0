@@ -1,5 +1,9 @@
 package chess;
 
+import chess.helper.Colour;
+import chess.helper.Position;
+import chess.pieces.*;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +17,9 @@ public class Board {
         this.board = board;
     }
 
+    /**
+     * This method is used to load the chess board. It places the pieces on their positions.
+     */
     private void initializeBoard(){
         for (int j = 0; j < board.length; j++) {
             board[1][j] = new Pawn(new Position(1, j), Colour.WHITE);
@@ -40,12 +47,21 @@ public class Board {
         board[7][4] = new Queen(new Position(7,4), Colour.BLACK);
     }
 
+    /**
+     * This method checks if there are pieces between initPosition and newPosition.
+     * @return true if there is at least one piece between the two given positions, false otherwise.
+     */
     public boolean hasPiecesBetween(Position initPosition, Position newPosition){
         List<Piece> pieces = getPiecesBetween(initPosition, newPosition);
         pieces.addAll(getPiecesBetween(initPosition, newPosition));
         return pieces.size()>0;
     }
 
+    /**
+     * This method checks if there are pieces between initPosition and newPosition. If true, the piece is
+     * stored to a new list.
+     * @return the list with the pieces between the two given positions.
+     */
     public List<Piece> getPiecesBetween(Position initPosition, Position newPosition){
 
         List<Piece> pieces = new LinkedList<>();
@@ -59,6 +75,12 @@ public class Board {
         return pieces;
     }
 
+    /**
+     * This method retrieves the positions from the board that are next to the king's position (on same row/column/diagonal,
+     * but not farther than one square).
+     * @param kingPos - represents the king's position.
+     * @return a new list with all positions that surround the king's current position and which are on the board.
+     */
     public List<Position> getSurroundingPositions(Position kingPos){
         List<Position> surroundingPositions = new LinkedList<>();
         for (int i = kingPos.getX()-1; i <= kingPos.getX()+1; i++) {
@@ -73,6 +95,13 @@ public class Board {
         return surroundingPositions;
     }
 
+    /**
+     * This method retrieves the squares between two given positions. It also checks if the positions are on the same
+     * row, column or diagonal.
+     * @return a new list with the positions between two given squares.
+     *      null if there are no positions between the two given squares or if the two positions are not on the same
+     *      row/column/diagonal.
+     */
     public List<Position> getPositionsBetween(Position from, Position to){
         List<Position> positions = new LinkedList<>();
 
@@ -84,12 +113,17 @@ public class Board {
             positions = getPositionsBetween_Column(from, to);
         }
 
-        if (isADiagPos(from, to)){
+        if (isADiagonalPos(from, to)){
             positions = getPositionsBetween_Diagonal(from, to);
         }
         return positions;
     }
 
+    /**
+     * This method retrieves the positions between two given squares that are on the same row.
+     * @return a new list with the positions between two given squares.
+     *      null if there are no positions between the two given squares.
+     */
     private List<Position> getPositionsBetween_Row(Position from, Position to){
         List<Position> positions = new LinkedList<>();
         for (int i = from.getY()+1; i < to.getY(); i++) {
@@ -101,6 +135,11 @@ public class Board {
         return positions;
     }
 
+    /**
+     * This method retrieves the positions between two given squares that are on the same column.
+     * @return a new list with the positions between two given squares.
+     *      null if there are no positions between the two given squares.
+     */
     private List<Position> getPositionsBetween_Column(Position from, Position to){
         List<Position> positions = new LinkedList<>();
         for (int i = from.getX()+1; i < to.getX(); i++) {
@@ -112,6 +151,11 @@ public class Board {
         return positions;
     }
 
+    /**
+     * This method retrieves the positions between two given squares that are on the same diagonal.
+     * @return a new list with the positions between two given squares.
+     *      null if there are no positions between the two given squares.
+     */
     private List<Position> getPositionsBetween_Diagonal(Position from, Position to){
         List<Position> positions = new LinkedList<>();
 
@@ -145,17 +189,34 @@ public class Board {
 
         return positions;
     }
+
+    /**
+     * This method checks if two positions are on the same row.
+     * @return true if positions are on the same row, false otherwise.
+     */
     public boolean isSameRow(Position initPosition, Position newPosition){
         return initPosition.getX() == newPosition.getX();
     }
 
+    /**
+     * This method checks if two positions are on the same column.
+     * @return true if positions are on the same column, false otherwise.
+     */
     public boolean isSameColumn(Position initPosition, Position newPosition){
         return initPosition.getY() == newPosition.getY();
     }
 
-    public boolean isADiagPos(Position initPosition, Position newPosition){
+    /**
+     * This method checks if two positions are on the same diagonal.
+     * @return true if positions are on the same diagonal, false otherwise.
+     */
+    public boolean isADiagonalPos(Position initPosition, Position newPosition){
         return Math.abs(initPosition.getX() - newPosition.getX()) == Math.abs(initPosition.getY() - newPosition.getY());
     }
+
+    /**
+     * This is a helper method that allocates the pieces to corresponding player.
+     */
     public void allocatePieces(Player player1, Player player2){
 
         for (Piece[] pieces : board) {
