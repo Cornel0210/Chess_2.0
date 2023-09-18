@@ -17,10 +17,13 @@ public class Knight implements Piece {
         setPosition(newPosition);
         board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
     }
-    public void temporaryMoveTo(Position newPosition, Board board) {
-        board.getChessBoard()[position.getX()][position.getY()] = null;
-        setPosition(newPosition);
-        board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
+    public void undo(Position oldPos, Position newPos, Board board, Piece opponentPiece, Player opponent) {
+        setPosition(oldPos);
+        board.getChessBoard()[oldPos.getX()][oldPos.getY()] = this;
+        if (opponentPiece!= null){
+            opponent.undoRemovedPiece();
+        }
+        board.getChessBoard()[newPos.getX()][newPos.getY()] = opponentPiece;
     }
     @Override
     public boolean canMoveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
@@ -30,15 +33,13 @@ public class Knight implements Piece {
 
             Piece opponentPiece = board.getPiece(newPosition);
             Position currentPosition = position;
-            temporaryMoveTo(newPosition, board);
+            moveTo(newPosition, board, currentPlayer, opponent);
             King king = currentPlayer.getKing();
             if (king.isChecked(board, currentPlayer, opponent)){
-                temporaryMoveTo(currentPosition, board);
-                board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+                undo(currentPosition, newPosition, board, opponentPiece, opponent);
                 return false;
             }
-            temporaryMoveTo(currentPosition, board);
-            board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+            undo(currentPosition, newPosition, board, opponentPiece, opponent);
             return true;
         }
         return false;

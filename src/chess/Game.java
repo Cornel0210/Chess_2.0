@@ -27,6 +27,7 @@ public class Game {
     public void play(){
         Player current;
         Player opponent;
+        System.out.println("Good luck!");
         System.out.println(board);
         while (!isEnd){
             current = isWhite ? player1 : player2;
@@ -39,8 +40,15 @@ public class Game {
                 to = current.getPosition();
             }
             isWhite = !isWhite;
-            System.out.println(board);
+            printDetails();
         }
+    }
+
+    private void printDetails(){
+        System.out.println(board);
+        System.out.println(player1.getName() + " - lost pieces : " + player1.getRemovedPieces());
+        System.out.println(player2.getName() + " - lost pieces : " + player2.getRemovedPieces());
+        System.out.println("================***================");
     }
 
     public boolean movePiece(Position oldPosition, Position newPosition, Player currentPlayer, Player opponent){

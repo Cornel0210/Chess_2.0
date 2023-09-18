@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,11 +82,16 @@ public class King implements Piece {
         return false;
     }
 
-    public boolean isChecked(Board board, Player currentPlayer, Player opponent){
-        return piecesThatCanMoveTo(position, board, currentPlayer, opponent).size() > 0;
+    public boolean isChecked(Board board, Player currentPlayer, Player opponent) {
+        try {
+            return piecesThatCheckPos(position, board, currentPlayer, opponent).size() > 0;
+        } catch (ConcurrentModificationException e){
+            System.out.println(this + " is checked!");
+            return true;
+        }
     }
 
-    private List<Piece> piecesThatCanMoveTo(Position newPosition, Board board, Player currentPlayer, Player opponent){ //checks if king will be checked at the newPosition
+    private List<Piece> piecesThatCheckPos(Position newPosition, Board board, Player currentPlayer, Player opponent) throws ConcurrentModificationException { //checks if king will be checked at the newPosition
         List<Piece> opponentPieces = opponent.getAvailablePieces();
         List<Piece> opponentAttackers = new LinkedList<>();
         for (Piece piece : opponentPieces){
@@ -156,7 +162,7 @@ public class King implements Piece {
                 posBetween =  board.getPositionsBetween(position, rookPos);
             }
             for (Position posToCheck : posBetween){
-                if (piecesThatCanMoveTo(posToCheck, board, currentPlayer, opponent).size() > 0){
+                if (piecesThatCheckPos(posToCheck, board, currentPlayer, opponent).size() > 0){
                     return false;
                 }
             }
@@ -166,7 +172,7 @@ public class King implements Piece {
     }
 
     public boolean isInCheckMate(Board board, Player currentPlayer, Player opponent){
-        List<Piece> attackers = piecesThatCanMoveTo(position, board, opponent, currentPlayer);
+        List<Piece> attackers = piecesThatCheckPos(position, board, opponent, currentPlayer);
         List<Position> surroundingPositions = board.getSurroundingPositions(position);
         if (attackers.isEmpty()){
             return false;
@@ -176,7 +182,7 @@ public class King implements Piece {
         for (Position pos : surroundingPositions){
             Piece opponentPiece = board.getPiece(pos);
             moveKing(pos, board);
-            if (piecesThatCanMoveTo(pos, board, opponent, currentPlayer).isEmpty()){
+            if (piecesThatCheckPos(pos, board, opponent, currentPlayer).isEmpty()){
                 undo(currentPosition, pos, board, opponentPiece, opponent);
                 return false;
             }
@@ -189,7 +195,7 @@ public class King implements Piece {
             List<Position> posBetween = board.getPositionsBetween(position, attacker.getPosition());
             posBetween.add(attacker.getPosition());
             for (Position pos : posBetween){
-                if (!piecesThatCanMoveTo(pos, board, currentPlayer, opponent).isEmpty()){
+                if (!piecesThatCheckPos(pos, board, currentPlayer, opponent).isEmpty()){
                     return false;
                 }
             }

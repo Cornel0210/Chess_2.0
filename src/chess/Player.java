@@ -9,8 +9,8 @@ public class Player {
     private King king;
     private Rook leftRook;
     private Rook rightRook;
-    private List<Piece> availablePieces;
-    private LinkedList<Piece> removedPieces;
+    private final List<Piece> availablePieces;
+    private final LinkedList<Piece> removedPieces;
 
     public Player(String name, Colour colour) {
         this.name = name;
@@ -39,11 +39,6 @@ public class Player {
         if (piece != null) {
             addAvailablePiece(piece);
         }
-    }
-
-    public void resetListsOfPieces(){
-        availablePieces = new LinkedList<>();
-        removedPieces = new LinkedList<>();
     }
 
     public String getName() {

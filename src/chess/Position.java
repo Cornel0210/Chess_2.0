@@ -1,8 +1,8 @@
 package chess;
 
 public class Position {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public Position(int x, int y) {
         this.x = x;
@@ -13,16 +13,8 @@ public class Position {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public boolean isOnBoard(){

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Input {
     private static Input INSTANCE;
-    private Scanner scanner;
+    private final Scanner scanner;
 
     private Input() {
         this.scanner = new Scanner(System.in);
@@ -15,7 +15,7 @@ public class Input {
 
     public Position getPosition(){
         int x, y;
-        System.out.println("Insert two value between [0-7]");
+        System.out.println("Insert two values between [0-7]");
         x = getInt();
         y = getInt();
         return new Position(x,y);
