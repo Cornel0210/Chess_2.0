@@ -11,20 +11,24 @@ public class Rook implements Piece {
     }
 
     @Override
-    public void moveTo(Position newPosition, Board board) {
-        temporaryMoveTo(newPosition, board);
+    public void moveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
+        opponent.addRemovedPiece(board.getPiece(newPosition));
+        board.getChessBoard()[position.getX()][position.getY()] = null;
+        setPosition(newPosition);
+        board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
         wasMoved = true;
     }
 
-    public void temporaryMoveTo(Position newPosition, Board board) {
-        board.getChessBoard()[position.getX()][position.getY()] = null;
-        setPosition(newPosition);
-        board.getChessBoard()[position.getX()][position.getY()] = this;
+    public void undo(Position oldPos, Position newPos, Board board, Piece opponentPiece, Player opponent) {
+        setPosition(oldPos);
+        board.getChessBoard()[oldPos.getX()][oldPos.getY()] = this;
+        opponent.undoRemovedPiece();
+        board.getChessBoard()[newPos.getX()][newPos.getY()] = opponentPiece;
     }
 
     @Override
-    public boolean canMoveTo(Position newPosition, Board board, Player player) {
-        if (colour == player.getColour() &&
+    public boolean canMoveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
+        if (colour == currentPlayer.getColour() &&
                 Piece.super.isValid(newPosition, board, colour) &&
                 (board.isSameRow(position, newPosition) ||
                 board.isSameColumn(position, newPosition)) &&
@@ -32,13 +36,13 @@ public class Rook implements Piece {
 
             Piece opponentPiece = board.getPiece(newPosition);
             Position currentPosition = position;
-            temporaryMoveTo(newPosition, board);
-            King king = player.getKing();
-            if (king.isChecked()){
-                temporaryMoveTo(currentPosition, board);
-                board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+            moveTo(newPosition, board, currentPlayer, opponent);
+            King king = currentPlayer.getKing();
+            if (king.isChecked(board, currentPlayer, opponent)){
+                undo(currentPosition, newPosition, board, opponentPiece, opponent);
                 return false;
             }
+            undo(currentPosition, newPosition, board, opponentPiece, opponent);
             return true;
         }
         return false;

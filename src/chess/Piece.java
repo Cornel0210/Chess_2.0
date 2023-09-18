@@ -1,8 +1,8 @@
 package chess;
 
 public interface Piece {
-    void moveTo(Position newPosition, Board board);
-    boolean canMoveTo(Position newPosition, Board board, Player player);
+    void moveTo(Position newPosition, Board board, Player currentPlayer, Player opponent);
+    boolean canMoveTo(Position newPosition, Board board, Player currentPlayer, Player opponent);
     Colour getColour();
     void setPosition(Position position);
     Position getPosition();

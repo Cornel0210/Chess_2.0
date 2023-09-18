@@ -6,14 +6,15 @@ import java.util.List;
 public class Player {
     private final String name;
     private final Colour colour;
-    private final King king;
+    private King king;
+    private Rook leftRook;
+    private Rook rightRook;
     private List<Piece> availablePieces;
     private LinkedList<Piece> removedPieces;
 
-    public Player(String name, Colour colour, Piece king) {
+    public Player(String name, Colour colour) {
         this.name = name;
         this.colour = colour;
-        this.king = (King) king;
         availablePieces = new LinkedList<>();
         removedPieces = new LinkedList<>();
     }
@@ -39,9 +40,6 @@ public class Player {
             addAvailablePiece(piece);
         }
     }
-    public List<Piece> getAvailablePieces() {
-        return availablePieces;
-    }
 
     public void resetListsOfPieces(){
         availablePieces = new LinkedList<>();
@@ -56,7 +54,34 @@ public class Player {
         return colour;
     }
 
+    public void setKing(King king) {
+        this.king = king;
+    }
+
+    public void setLeftRook(Rook leftRook) {
+        this.leftRook = leftRook;
+    }
+
+    public void setRightRook(Rook rightRook) {
+        this.rightRook = rightRook;
+    }
+
     public King getKing() {
         return king;
+    }
+
+    public Rook getLeftRook() {
+        return leftRook;
+    }
+
+    public Rook getRightRook() {
+        return rightRook;
+    }
+    public List<Piece> getAvailablePieces() {
+        return availablePieces;
+    }
+
+    public LinkedList<Piece> getRemovedPieces() {
+        return removedPieces;
     }
 }

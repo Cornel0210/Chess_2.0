@@ -1,7 +1,6 @@
 package chess;
 
 public class Game {
-    private static Game INSTANCE;
     private final Board board;
     private final Player player1;
     private final Player player2;
@@ -10,8 +9,15 @@ public class Game {
 
     public Game() {
         board = new Board();
-        player1 = new Player("player1", Colour.WHITE, board.getPiece(new Position(0,3)));
-        player2 = new Player("player2", Colour.BLACK, board.getPiece(new Position(7,3)));
+        player1 = new Player("player1", Colour.WHITE);
+        player2 = new Player("player2", Colour.BLACK);
+        isWhite = true;
+        board.allocatePieces(player1, player2);
+    }
+    public Game(Piece[][] chessBoard) {
+        board = new Board(chessBoard);
+        player1 = new Player("player1", Colour.WHITE);
+        player2 = new Player("player2", Colour.BLACK);
         isWhite = true;
         board.allocatePieces(player1, player2);
     }
@@ -34,17 +40,14 @@ public class Game {
         }
     }
 
-    public boolean movePiece(Position oldPosition, Position newPosition, Player player, Player opponent){
+    public boolean movePiece(Position oldPosition, Position newPosition, Player currentPlayer, Player opponent){
         Piece pieceToMove = board.getPiece(oldPosition);
-        Piece removedPiece = board.getPiece(newPosition);
 
-        if (!pieceToMove.canMoveTo(newPosition, board, player)) {
+        if (!pieceToMove.canMoveTo(newPosition, board, currentPlayer, opponent)) {
             System.out.println("You cannot perform that move.");
             return false;
-        } else {
-            pieceToMove.moveTo(newPosition, board);
-            opponent.addRemovedPiece(removedPiece);
         }
+        pieceToMove.moveTo(newPosition, board, currentPlayer, opponent);
         King opponentKing = opponent.getKing();
         if (opponentKing.isInCheckMate(board)){
             isEnd = true;
@@ -52,31 +55,15 @@ public class Game {
         return true;
     }
 
-    public Player getOpponent (Colour colour){
-        return player1.getColour() == colour ? player2 : player1;
-    }
-
     public Player getPlayer(Colour colour){
         return player1.getColour() == colour ? player1 : player2;
-    }
-
-    public void setCustomBoard(Piece[][] customBoard){
-        board.resetBoard(customBoard, player1, player2);
-        isEnd = false;
-    }
-    public void resetBoard(){
-        isEnd = false;
-        board.resetBoard(player1, player2);
     }
 
     public boolean isEnd() {
         return isEnd;
     }
 
-    public static Game getInstance() {
-        if (INSTANCE == null){
-            INSTANCE = new Game();
-        }
-        return INSTANCE;
+    public void printBoard(){
+        System.out.println(board);
     }
 }

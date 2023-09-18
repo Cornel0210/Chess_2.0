@@ -11,16 +11,23 @@ public class Queen implements Piece {
     }
 
     @Override
-    public void moveTo(Position newPosition, Board board) {
+    public void moveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
+        opponent.addRemovedPiece(board.getPiece(newPosition));
         board.getChessBoard()[position.getX()][position.getY()] = null;
         setPosition(newPosition);
-        board.getChessBoard()[position.getX()][position.getY()] = this;
+        board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
     }
-
+    public void undo(Position oldPos, Position newPos, Board board, Piece opponentPiece, Player opponent) {
+        setPosition(oldPos);
+        board.getChessBoard()[oldPos.getX()][oldPos.getY()] = this;
+        opponent.undoRemovedPiece();
+        board.getChessBoard()[newPos.getX()][newPos.getY()] = opponentPiece;
+    }
     @Override
-    public boolean canMoveTo(Position newPosition, Board board, Player player) {
+    public boolean canMoveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
 
-        if ((board.isSameRow(position, newPosition) ||
+        if (colour == currentPlayer.getColour() &&
+                (board.isSameRow(position, newPosition) ||
                 board.isSameColumn(position, newPosition) ||
                 board.isADiagPos(position, newPosition)) &&
                 hasNoPiecesTo(newPosition, board) &&
@@ -28,13 +35,13 @@ public class Queen implements Piece {
 
             Piece opponentPiece = board.getPiece(newPosition);
             Position currentPosition = position;
-            moveTo(newPosition, board);
-            King king = player.getKing();
-            if (king.isChecked()) {
-                moveTo(currentPosition, board);
-                board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
+            moveTo(newPosition, board, currentPlayer, opponent);
+            King king = currentPlayer.getKing();
+            if (king.isChecked(board, currentPlayer, opponent)) {
+                undo(currentPosition, newPosition, board, opponentPiece, opponent);
                 return false;
             }
+            undo(currentPosition, newPosition, board, opponentPiece, opponent);
             return true;
         }
         return false;

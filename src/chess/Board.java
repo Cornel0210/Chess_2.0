@@ -164,13 +164,32 @@ public class Board {
             for (Piece piece : pieces) {
                 if (piece != null) {
                     if (piece.getColour() == player1.getColour()) {
+                        if (piece instanceof King){
+                            player1.setKing((King)piece);
+                        }
+                        if (piece instanceof Rook && piece.getPosition().getY() == 0){
+                            player1.setLeftRook((Rook) piece);
+                        }
+                        if (piece instanceof Rook && piece.getPosition().getY() == 7){
+                            player1.setRightRook((Rook) piece);
+                        }
                         player1.addAvailablePiece(piece);
                     } else {
+                        if (piece instanceof King){
+                            player2.setKing((King)piece);
+                        }
+                        if (piece instanceof Rook && piece.getPosition().getY() == 0){
+                            player2.setLeftRook((Rook) piece);
+                        }
+                        if (piece instanceof Rook && piece.getPosition().getY() == 7){
+                            player2.setRightRook((Rook) piece);
+                        }
                         player2.addAvailablePiece(piece);
                     }
                 }
             }
         }
+
         player1.getAvailablePieces().remove(player1.getKing());
         player2.getAvailablePieces().remove(player2.getKing());
     }

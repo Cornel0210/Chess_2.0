@@ -11,27 +11,34 @@ public class Knight implements Piece {
 
 
     @Override
-    public void moveTo(Position newPosition, Board board) {
+    public void moveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
+        opponent.addRemovedPiece(board.getPiece(newPosition));
         board.getChessBoard()[position.getX()][position.getY()] = null;
         setPosition(newPosition);
-        board.getChessBoard()[position.getX()][position.getY()] = this;
+        board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
     }
-
+    public void temporaryMoveTo(Position newPosition, Board board) {
+        board.getChessBoard()[position.getX()][position.getY()] = null;
+        setPosition(newPosition);
+        board.getChessBoard()[newPosition.getX()][newPosition.getY()] = this;
+    }
     @Override
-    public boolean canMoveTo(Position newPosition, Board board, Player player) {
-        if (colour == player.getColour() &&
+    public boolean canMoveTo(Position newPosition, Board board, Player currentPlayer, Player opponent) {
+        if (colour == currentPlayer.getColour() &&
                 this.isValid(newPosition) &&
                 Piece.super.isValid(newPosition, board, colour)){
 
             Piece opponentPiece = board.getPiece(newPosition);
             Position currentPosition = position;
-            moveTo(newPosition, board);
-            King king = player.getKing();
-            if (king.isChecked()){
-                moveTo(currentPosition, board);
+            temporaryMoveTo(newPosition, board);
+            King king = currentPlayer.getKing();
+            if (king.isChecked(board, currentPlayer, opponent)){
+                temporaryMoveTo(currentPosition, board);
                 board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
                 return false;
             }
+            temporaryMoveTo(currentPosition, board);
+            board.getChessBoard()[newPosition.getX()][newPosition.getY()] = opponentPiece;
             return true;
         }
         return false;
