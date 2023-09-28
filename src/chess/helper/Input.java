@@ -70,4 +70,10 @@ public class Input {
         }
         return INSTANCE;
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        scanner.close();
+    }
 }
